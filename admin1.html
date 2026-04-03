@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>সঞ্চয় কন্ট্রোল প্যানেল</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   ROOT COLORS & GLOBAL STYLE
+========================= */
+:root{
+    --primary:#0f766e;
+    --primary-dark:#115e59;
+    --primary-light:#14b8a6;
+    --secondary:#4f46e5;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --success:#10b981;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+    --shadow:0 14px 30px rgba(15,23,42,.08);
+    --radius-xl:24px;
+    --radius-lg:18px;
+    --radius-md:14px;
+    --radius-sm:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+    font-family:'Hind Siliguri',sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(20,184,166,.07), transparent 28%),
+        radial-gradient(circle at top right, rgba(79,70,229,.07), transparent 30%),
+        linear-gradient(180deg,#f8fbff 0%,#f4f7fb 50%,#eef4f8 100%);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+.container{
+    width:min(1100px, calc(100% - 22px));
+    margin:0 auto;
+    padding:14px 0 28px;
+}
+
+/* =========================
+   TOP HEADER
+========================= */
+.topbar{
+    background:linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #4f46e5 100%);
+    color:#fff;
+    border-radius:var(--radius-xl);
+    padding:18px;
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+}
+.topbar-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+}
+.title-wrap h1{
+    font-size:1.3rem;
+    font-weight:800;
+    line-height:1.25;
+    margin-bottom:6px;
+}
+.title-wrap p{
+    color:rgba(255,255,255,.88);
+    font-size:.94rem;
+    line-height:1.5;
+}
+.topbar-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+.action-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    min-height:46px;
+    padding:12px 16px;
+    border-radius:14px;
+    font-family:'Hind Siliguri',sans-serif;
+    font-size:.95rem;
+    font-weight:800;
+    transition:.2s ease;
+}
+.action-btn:active{transform:scale(.98);}
+.action-btn.primary{
+    background:#ffffff;
+    color:var(--primary-dark);
+}
+.action-btn.secondary{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.22);
+}
+.action-btn:hover{
+    transform:translateY(-1px);
+}
+
+/* =========================
+   QUICK STATS
+========================= */
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:12px;
+    margin-bottom:16px;
+}
+.stat-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:16px;
+    box-shadow:var(--shadow);
+}
+.stat-label{
+    font-size:.86rem;
+    color:var(--muted);
+    font-weight:800;
+    margin-bottom:8px;
+}
+.stat-value{
+    font-size:1.55rem;
+    font-weight:800;
+    color:var(--text);
+}
+.stat-note{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.82rem;
+    line-height:1.45;
+}
+
+/* =========================
+   CONTROL PANEL
+========================= */
+.controls{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:16px;
+}
+.controls-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+}
+.controls-head h2{
+    font-size:1.03rem;
+    font-weight:800;
+}
+.controls-head p{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:.9rem;
+}
+.controls-grid{
+    display:grid;
+    grid-template-columns:1.2fr .9fr;
+    gap:12px;
+}
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+.field label{
+    font-size:.86rem;
+    font-weight:800;
+    color:var(--muted);
+}
+.input-wrap{
+    position:relative;
+}
+.input-wrap input,
+.input-wrap select{
+    width:100%;
+    border:1.5px solid var(--border);
+    background:#fff;
+    border-radius:14px;
+    outline:none;
+    min-height:50px;
+    padding:12px 14px;
+    font-size:1rem;
+    color:var(--text);
+    font-family:'Hind Siliguri',sans-serif;
+    transition:.2s ease;
+}
+.input-wrap input{
+    padding-left:44px;
+}
+.input-wrap input:focus,
+.input-wrap select:focus{
+    border-color:var(--primary-light);
+    box-shadow:0 0 0 4px rgba(20,184,166,.10);
+}
+.search-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+    pointer-events:none;
+}
+.status-chip{
+    margin-top:12px;
+    min-height:50px;
+    border-radius:14px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-weight:800;
+    font-size:.93rem;
+    border:1.5px solid rgba(16,185,129,.25);
+    background:linear-gradient(135deg, rgba(16,185,129,.10), rgba(20,184,166,.10));
+    color:var(--primary-dark);
+}
+.status-chip.saving{
+    background:linear-gradient(135deg, rgba(245,158,11,.12), rgba(251,191,36,.08));
+    border-color:rgba(245,158,11,.28);
+    color:#a16207;
+}
+.status-chip.error{
+    background:linear-gradient(135deg, rgba(239,68,68,.12), rgba(248,113,113,.08));
+    border-color:rgba(239,68,68,.30);
+    color:#991b1b;
+}
+
+/* =========================
+   MEMBER PANEL
+========================= */
+.panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+.panel-top{
+    padding:16px;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg,#fcfeff 0%,#f8fbff 100%);
+}
+.panel-top h2{
+    font-size:1.03rem;
+    font-weight:800;
+}
+.panel-top p{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:.9rem;
+}
+.members-wrap{
+    padding:14px;
+    display:grid;
+    gap:14px;
+}
+
+/* =========================
+   MEMBER CARD
+========================= */
+.member-card{
+    border:1px solid rgba(226,232,240,.95);
+    border-radius:22px;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(248,251,255,1) 100%);
+    padding:12px;
+    box-shadow:0 10px 24px rgba(15,23,42,.06);
+    transition:.22s ease;
+}
+.member-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 16px 30px rgba(15,23,42,.09);
+}
+.member-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eef2f7;
+}
+.avatar{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    font-size:.95rem;
+    color:#fff;
+    background:linear-gradient(135deg,var(--primary-light),var(--secondary));
+    box-shadow:0 8px 18px rgba(79,70,229,.18);
+}
+.member-info{
+    min-width:0;
+}
+.member-name{
+    font-size:1rem;
+    font-weight:800;
+    line-height:1.3;
+    word-break:break-word;
+}
+.member-meta{
+    margin-top:4px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+.tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:linear-gradient(180deg,#f8fafc,#eef2f7);
+    color:#475569;
+    font-size:.74rem;
+    font-weight:800;
+    border:1px solid #e2e8f0;
+}
+
+/* =========================
+   EXTRA CONTRIBUTION PANEL
+========================= */
+.extra-panel{
+    background:linear-gradient(135deg, rgba(37,99,235,.08), rgba(14,165,233,.05));
+    border:1px solid #bfdbfe;
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:16px;
+}
+.extra-panel-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+}
+.extra-panel-head h2{
+    font-size:1.03rem;
+    font-weight:800;
+}
+.extra-panel-head p{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:.9rem;
+    line-height:1.5;
+}
+.extra-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #bfdbfe;
+    color:#1d4ed8;
+    font-size:.84rem;
+    font-weight:800;
+}
+.extra-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:12px;
+}
+.extra-card{
+    background:rgba(255,255,255,.85);
+    border:1px solid rgba(191,219,254,.85);
+    border-radius:18px;
+    padding:14px;
+}
+.extra-card-title{
+    font-size:.92rem;
+    font-weight:800;
+    margin-bottom:10px;
+}
+.member-search-results{
+    margin-top:10px;
+    display:grid;
+    gap:8px;
+    max-height:240px;
+    overflow:auto;
+}
+.member-search-item{
+    width:100%;
+    text-align:left;
+    border:1px solid #dbeafe;
+    background:#fff;
+    color:var(--text);
+    border-radius:14px;
+    padding:11px 12px;
+    cursor:pointer;
+    font-family:'Hind Siliguri',sans-serif;
+    transition:.18s ease;
+}
+.member-search-item:hover,
+.member-search-item.active{
+    border-color:#60a5fa;
+    background:linear-gradient(135deg, rgba(59,130,246,.08), rgba(14,165,233,.05));
+    transform:translateY(-1px);
+}
+.member-search-name{
+    font-size:.93rem;
+    font-weight:800;
+}
+.member-search-meta{
+    margin-top:4px;
+    font-size:.76rem;
+    color:var(--muted);
+}
+.extra-form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+.extra-action-box{
+    margin-top:12px;
+    padding:12px;
+    border-radius:16px;
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    border:1px dashed #bfdbfe;
+}
+.extra-summary{
+    margin-top:12px;
+    min-height:52px;
+    border-radius:14px;
+    padding:12px 14px;
+    border:1px solid #dbeafe;
+    background:#fff;
+    font-size:.9rem;
+    color:#334155;
+    line-height:1.55;
+}
+.extra-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+.extra-btn{
+    border:none;
+    cursor:pointer;
+    min-height:46px;
+    padding:0 14px;
+    border-radius:14px;
+    font-family:'Hind Siliguri',sans-serif;
+    font-size:.9rem;
+    font-weight:800;
+    transition:.18s ease;
+}
+.extra-btn.primary{
+    background:linear-gradient(135deg, #2563eb, #0ea5e9);
+    color:#fff;
+}
+.extra-btn.secondary{
+    background:#fff;
+    color:#1d4ed8;
+    border:1.5px solid #bfdbfe;
+}
+.extra-btn.ghost{
+    background:#fff;
+    color:#475569;
+    border:1.5px solid #e2e8f0;
+}
+.extra-btn:active{
+    transform:scale(.98);
+}
+
+/* =========================
+   WEEK GRID
+========================= */
+.weeks-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(74px, 1fr));
+    gap:8px;
+}
+
+.week-box{
+    position:relative;
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    background:#fff;
+    padding:8px 6px;
+    min-height:72px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:5px;
+    transition:.18s ease;
+    box-shadow:0 4px 10px rgba(15,23,42,.04);
+}
+.week-box.checked{
+    border-color:var(--success);
+    background:linear-gradient(135deg, rgba(34,197,94,.12), rgba(16,185,129,.08));
+}
+.week-box.unchecked{
+    border-color:#fecaca;
+    background:linear-gradient(135deg, rgba(248,113,113,.10), rgba(239,68,68,.06));
+}
+.week-label{
+    font-size:.68rem;
+    font-weight:800;
+    color:var(--muted);
+    line-height:1.2;
+}
+
+.week-label strong{
+    display:block;
+    color:var(--text);
+    font-size:.76rem;
+    margin-bottom:1px;
+}
+
+.week-box input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    accent-color:var(--success);
+    cursor:pointer;
+}
+
+.week-state{
+    font-size:.64rem;
+    font-weight:800;
+    color:var(--muted);
+    letter-spacing:.2px;
+}
+.week-box.checked .week-state{color:#047857;}
+.week-box.unchecked .week-state{color:#b91c1c;}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty-state{
+    padding:36px 16px;
+    text-align:center;
+    color:var(--muted);
+}
+.empty-state h3{
+    color:var(--text);
+    font-size:1.15rem;
+    margin-bottom:8px;
+}
+.empty-state p{
+    font-size:.95rem;
+    line-height:1.6;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.panel-footer{
+    padding:14px 16px;
+    border-top:1px solid var(--border);
+    background:#f8fbff;
+    color:var(--muted);
+    font-size:.92rem;
+    font-weight:700;
+    line-height:1.6;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width:900px){
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+@media (max-width:640px){
+    .container{
+        width:min(100% - 14px, 100%);
+        padding:10px 0 20px;
+    }
+
+    .topbar{
+        padding:14px;
+        border-radius:18px;
+    }
+
+    .title-wrap h1{
+        font-size:1.1rem;
+    }
+
+    .title-wrap p{
+        font-size:.88rem;
+    }
+
+    .topbar-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
+
+    .action-btn{
+        width:100%;
+        min-height:44px;
+        padding:10px 12px;
+        font-size:.9rem;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    .controls{
+        padding:14px;
+        border-radius:18px;
+    }
+
+    .controls-grid{
+        grid-template-columns:1fr;
+    }
+
+    .status-chip{
+        font-size:.88rem;
+    }
+
+    .panel,
+    .member-card{
+        border-radius:18px;
+    }
+
+    .member-card{
+        padding:10px;
+    }
+
+    .extra-grid,
+    .extra-form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .extra-panel{
+        padding:14px;
+        border-radius:18px;
+    }
+
+    .extra-actions{
+        display:grid;
+        grid-template-columns:1fr;
+    }
+
+    .weeks-grid{
+        grid-template-columns:repeat(3, 1fr);
+        gap:7px;
+    }
+
+    .week-box{
+        min-height:66px;
+        padding:7px 4px;
+        border-radius:12px;
+    }
+
+    .week-box input[type="checkbox"]{
+        width:16px;
+        height:16px;
+    }
+
+    .week-label{
+        font-size:.62rem;
+    }
+
+    .week-label strong{
+        font-size:.7rem;
+    }
+
+    .week-state{
+        font-size:.58rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP HEADER -->
+    <section class="topbar">
+        <div class="topbar-head">
+            <div class="title-wrap">
+                <h1>সঞ্চয় কন্ট্রোল প্যানেল</h1>
+                <p>ফোন থেকেও সহজে সদস্যদের শুক্রবারভিত্তিক সঞ্চয় কন্ট্রোল করার জন্য সহজ, পরিষ্কার এবং মোবাইল-ফ্রেন্ডলি প্যানেল।</p>
+            </div>
+
+            <div class="topbar-actions">
+                <a href="index.html" class="action-btn primary">↗ মূল এডমিন প্যানেল</a>
+                <button type="button" class="action-btn secondary" id="goTopBtn">উপরে যান</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPORTANT SUMMARY -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">মোট সদস্য</div>
+            <div class="stat-value" id="totalMembers">0</div>
+            <div class="stat-note">ফিল্টার অনুযায়ী দেখা যাচ্ছে</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">এই মাসের শুক্রবার</div>
+            <div class="stat-value" id="totalFridays">0</div>
+            <div class="stat-note">নির্বাচিত মাসে মোট শুক্রবার</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">পরিশোধিত ঘর</div>
+            <div class="stat-value" id="checkedBoxes">0</div>
+            <div class="stat-note">এই মাসে মোট চেক দেওয়া হয়েছে</div>
+        </div>
+    </section>
+
+    <!-- CONTROL SECTION -->
+    <section class="controls">
+        <div class="controls-head">
+            <div>
+                <h2>গুরুত্বপূর্ণ কন্ট্রোল</h2>
+                <p>শুধু প্রয়োজনীয় অপশন রাখা হয়েছে</p>
+            </div>
+        </div>
+
+        <div class="controls-grid">
+            <div class="field">
+                <label for="searchInput">সদস্য খুঁজুন</label>
+                <div class="input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="নাম বা ফোন লিখুন..." autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="monthSelect">মাস নির্বাচন করুন</label>
+                <div class="input-wrap">
+                    <select id="monthSelect"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-chip" id="saveStatus">✓ সব পরিবর্তন সংরক্ষিত</div>
+    </section>
+
+    <!-- EXTRA CONTRIBUTION SECTION -->
+    <section class="extra-panel">
+        <div class="extra-panel-head">
+            <div>
+                <h2>অতিরিক্ত টাকা / বকেয়া ঘর পূরণ</h2>
+                <p>এখানে আগে সদস্য সার্চ করে নির্বাচন করুন। তারপর চাইলে অতিরিক্ত জমা হিসেবে টাকা যোগ করুন, অথবা বেশি টাকা দিলে আগের বকেয়া শুক্রবারগুলো অটো-ফিল করুন।</p>
+            </div>
+            <div class="extra-badge" id="extraSelectedBadge">কোন সদস্য সিলেক্ট করা হয়নি</div>
+        </div>
+
+        <div class="extra-grid">
+            <div class="extra-card">
+                <div class="extra-card-title">সদস্য নির্বাচন</div>
+                <div class="field">
+                    <label for="extraMemberSearch">সদস্য সার্চ করুন</label>
+                    <div class="input-wrap">
+                        <span class="search-icon">🔎</span>
+                        <input type="text" id="extraMemberSearch" placeholder="নাম লিখে সদস্য খুঁজুন..." autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="member-search-results" id="extraMemberResults"></div>
+            </div>
+
+            <div class="extra-card">
+                <div class="extra-card-title">টাকা জমা কন্ট্রোল</div>
+
+                <div class="extra-form-grid">
+                    <div class="field">
+                        <label for="extraTypeSelect">জমার ধরন</label>
+                        <div class="input-wrap">
+                            <select id="extraTypeSelect">
+                                <option value="extra">অতিরিক্ত জমা</option>
+                                <option value="fill_due">আগের বকেয়া ঘর পূরণ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="extraAmountInput">টাকার পরিমাণ</label>
+                        <div class="input-wrap">
+                            <input type="number" id="extraAmountInput" min="0" step="1" inputmode="numeric" placeholder="যেমন 20 / 50 / 100" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra-action-box">
+                    <div class="extra-summary" id="extraSummary">প্রথমে একজন সদস্য নির্বাচন করুন।</div>
+                    <div class="extra-actions">
+                        <button type="button" class="extra-btn primary" id="saveExtraActionBtn">সংরক্ষণ করুন</button>
+                        <button type="button" class="extra-btn secondary" id="previewExtraActionBtn">হিসাব দেখুন</button>
+                        <button type="button" class="extra-btn ghost" id="clearExtraSelectionBtn">রিসেট</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBER LIST -->
+    <section class="panel">
+        <div class="panel-top">
+            <h2>সদস্যভিত্তিক সঞ্চয় তালিকা</h2>
+            <p>ফোনে সহজে ব্যবহারের জন্য কার্ড আকারে দেখানো হচ্ছে</p>
+        </div>
+
+        <div class="members-wrap" id="table"></div>
+
+        <div class="panel-footer" id="footerInfo">
+            সদস্যদের সঞ্চয় অবস্থা এখানে দেখা যাবে
+        </div>
+    </section>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const app = initializeApp({
+    databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com"
+});
+const db = getDatabase(app);
+
+const WEEKLY_AMOUNT = 10;
+const SYNC_DEBOUNCE_MS = 250;
+
+let members = [];
+let savings = {};
+let syncInProgress = false;
+let syncQueued = false;
+let syncTimer = null;
+let membersLoaded = false;
+let savingsLoaded = false;
+let selectedExtraMemberId = "";
+
+const table = document.getElementById("table");
+const totalMembersEl = document.getElementById("totalMembers");
+const totalFridaysEl = document.getElementById("totalFridays");
+const checkedBoxesEl = document.getElementById("checkedBoxes");
+const saveStatusEl = document.getElementById("saveStatus");
+const searchInput = document.getElementById("searchInput");
+const monthSelect = document.getElementById("monthSelect");
+const footerInfo = document.getElementById("footerInfo");
+const goTopBtn = document.getElementById("goTopBtn");
+const extraMemberSearch = document.getElementById("extraMemberSearch");
+const extraMemberResults = document.getElementById("extraMemberResults");
+const extraTypeSelect = document.getElementById("extraTypeSelect");
+const extraAmountInput = document.getElementById("extraAmountInput");
+const extraSummary = document.getElementById("extraSummary");
+const extraSelectedBadge = document.getElementById("extraSelectedBadge");
+const saveExtraActionBtn = document.getElementById("saveExtraActionBtn");
+const previewExtraActionBtn = document.getElementById("previewExtraActionBtn");
+const clearExtraSelectionBtn = document.getElementById("clearExtraSelectionBtn");
+
+const months = [];
+for (let y = 2026; y <= 2027; y++) {
+    for (let m = 0; m < 12; m++) {
+        const d = new Date(y, m, 1);
+        months.push({
+            key: `${y}-${String(m + 1).padStart(2, "0")}`,
+            label: d.toLocaleString("bn-BD", { month: "long", year: "numeric" }),
+            year: y,
+            month: m
+        });
+    }
+}
+
+months.forEach((item) => {
+    const opt = document.createElement("option");
+    opt.value = item.key;
+    opt.textContent = item.label;
+    monthSelect.appendChild(opt);
+});
+
+const now = new Date();
+const defaultMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+monthSelect.value = months.some(m => m.key === defaultMonthKey) ? defaultMonthKey : "2026-03";
+
+function sanitizeText(value) {
+    return (value ?? "").toString().trim();
+}
+
+function normalizeAmount(value) {
+    const num = Number(value);
+    if (!Number.isFinite(num) || num < 0) return 0;
+    return Math.round(num);
+}
+
+function formatMoney(value) {
+    return Number(normalizeAmount(value)).toLocaleString("bn-BD");
+}
+
+function setSaveStatus(message, type = "success") {
+    saveStatusEl.textContent = message;
+    saveStatusEl.classList.remove("saving", "error");
+    if (type === "saving") saveStatusEl.classList.add("saving");
+    if (type === "error") saveStatusEl.classList.add("error");
+}
+
+function getSelectedMonth() {
+    return months.find(item => item.key === monthSelect.value) || months[0];
+}
+
+function getFridays(year, month) {
+    const date = new Date(year, month, 1);
+    const result = [];
+    while (date.getMonth() === month) {
+        if (date.getDay() === 5) {
+            result.push(date.getDate());
+        }
+        date.setDate(date.getDate() + 1);
+    }
+    return result;
+}
+
+function getMemberMonthData(memberId, monthKey) {
+    return savings?.[memberId]?.[monthKey] || {};
+}
+
+function getMemberExtraAmount(memberId, monthKey) {
+    return normalizeAmount(getMemberMonthData(memberId, monthKey).extraAmount || 0);
+}
+
+function getMonthUpdatedAt(memberId, monthKey) {
+    return Number(getMemberMonthData(memberId, monthKey).updatedAt || 0);
+}
+
+function calculateMemberGrandTotal(memberId) {
+    const memberSavings = savings?.[memberId] || {};
+    let paidWeeks = 0;
+    let extraTotal = 0;
+    let lastPaidDate = "";
+    let lastPaidAt = 0;
+
+    Object.entries(memberSavings).forEach(([monthKey, monthData]) => {
+        if (!monthData || typeof monthData !== "object") return;
+        const monthInfo = months.find(m => m.key === monthKey);
+        if (!monthInfo) return;
+
+        extraTotal += normalizeAmount(monthData.extraAmount || 0);
+
+        Object.entries(monthData).forEach(([fieldKey, value]) => {
+            if (!fieldKey.startsWith("week") || value !== true) return;
+            paidWeeks++;
+
+            const weekIndex = Number(fieldKey.replace("week", "")) - 1;
+            const fridays = getFridays(monthInfo.year, monthInfo.month);
+            const fridayDate = fridays[weekIndex];
+            if (!fridayDate) return;
+
+            const dt = new Date(monthInfo.year, monthInfo.month, fridayDate);
+            const ts = dt.getTime();
+
+            if (ts > lastPaidAt) {
+                lastPaidAt = ts;
+                lastPaidDate = dt.toLocaleDateString("bn-BD");
+            }
+        });
+
+        const extraUpdatedAt = Number(monthData.extraUpdatedAt || 0);
+        const extraAmount = normalizeAmount(monthData.extraAmount || 0);
+        if (extraAmount > 0 && extraUpdatedAt > lastPaidAt) {
+            lastPaidAt = extraUpdatedAt;
+            lastPaidDate = new Date(extraUpdatedAt).toLocaleDateString("bn-BD");
+        }
+    });
+
+    return {
+        totalPaid: (paidWeeks * WEEKLY_AMOUNT) + extraTotal,
+        paidWeeks,
+        extraTotal,
+        lastPaidDate: lastPaidDate || "তথ্য নেই",
+        lastPaidAt: lastPaidAt || 0
+    };
+}
+
+function getMemberInitial(name) {
+    const safe = sanitizeText(name);
+    return safe ? safe.charAt(0) : "স";
+}
+
+function shouldShowMember(member, searchValue) {
+    if (!searchValue) return true;
+    const name = sanitizeText(member.name).toLowerCase();
+    const phone = sanitizeText(member.phone).toLowerCase();
+    return name.includes(searchValue) || phone.includes(searchValue);
+}
+
+function getSelectableExtraMembers() {
+    const q = sanitizeText(extraMemberSearch?.value || "").toLowerCase();
+    return members.filter((member) => {
+        if (!q) return true;
+        const name = sanitizeText(member.name).toLowerCase();
+        const phone = sanitizeText(member.phone).toLowerCase();
+        return name.includes(q) || phone.includes(q);
+    });
+}
+
+function getSelectedExtraMember() {
+    return members.find(member => member.id === selectedExtraMemberId) || null;
+}
+
+function getMonthExtraAmount(memberId, monthKey) {
+    return normalizeAmount(getMemberMonthData(memberId, monthKey).extraAmount || 0);
+}
+
+function getForwardDueSlotsFrom(selectedMonthKey) {
+    const selectedMonthIndex = months.findIndex(item => item.key === selectedMonthKey);
+    if (selectedMonthIndex === -1) return [];
+
+    return months
+        .slice(selectedMonthIndex)
+        .flatMap((monthInfo) => {
+            const fridays = getFridays(monthInfo.year, monthInfo.month);
+            return fridays.map((date, index) => ({
+                monthKey: monthInfo.key,
+                weekKey: `week${index + 1}`,
+                label: `${monthInfo.label} • শুক্রবার ${index + 1} (${date} তারিখ)`,
+                time: new Date(monthInfo.year, monthInfo.month, date).getTime()
+            }));
+        })
+        .sort((a, b) => a.time - b.time);
+}
+
+function getUnpaidForwardSlots(memberId, selectedMonthKey) {
+    return getForwardDueSlotsFrom(selectedMonthKey).filter((slot) => {
+        return getMemberMonthData(memberId, slot.monthKey)?.[slot.weekKey] !== true;
+    });
+}
+
+function buildFillDuePlan(memberId, amount, selectedMonthKey) {
+    const safeAmount = normalizeAmount(amount);
+    const eligibleSlotCountByMoney = Math.floor(safeAmount / WEEKLY_AMOUNT);
+
+    const result = {
+        dueSlots: [],
+        usedAmount: 0,
+        leftover: safeAmount,
+        fullWeeksFromMoney: eligibleSlotCountByMoney,
+        unpaidForwardSlotsCount: 0,
+        reason: ""
+    };
+
+    if (!memberId) {
+        result.reason = "no_member";
+        return result;
+    }
+
+    const unpaidForwardSlots = getUnpaidForwardSlots(memberId, selectedMonthKey);
+    result.unpaidForwardSlotsCount = unpaidForwardSlots.length;
+
+    if (safeAmount <= 0) {
+        result.reason = "invalid_amount";
+        return result;
+    }
+
+    if (eligibleSlotCountByMoney <= 0) {
+        result.reason = "less_than_one_week";
+        return result;
+    }
+
+    if (!unpaidForwardSlots.length) {
+        result.reason = "no_due_slots";
+        return result;
+    }
+
+    const fillCount = Math.min(eligibleSlotCountByMoney, unpaidForwardSlots.length);
+    result.dueSlots = unpaidForwardSlots.slice(0, fillCount);
+    result.usedAmount = fillCount * WEEKLY_AMOUNT;
+    result.leftover = Math.max(0, safeAmount - result.usedAmount);
+    result.reason = "ok";
+
+    return result;
+}
+
+function updateExtraSummary() {
+    const member = getSelectedExtraMember();
+    const selectedMonth = getSelectedMonth();
+    const mode = extraTypeSelect.value;
+    const amount = normalizeAmount(extraAmountInput.value || 0);
+
+    if (!member) {
+        extraSelectedBadge.textContent = "কোন সদস্য সিলেক্ট করা হয়নি";
+        extraSummary.innerHTML = "প্রথমে একজন সদস্য নির্বাচন করুন।";
+        return;
+    }
+
+    const grand = calculateMemberGrandTotal(member.id);
+    const monthExtra = getMonthExtraAmount(member.id, selectedMonth.key);
+    extraSelectedBadge.textContent = `${sanitizeText(member.name || "সদস্য")} নির্বাচিত`;
+
+    if (mode === "extra") {
+        extraSummary.innerHTML = `নির্বাচিত সদস্য: <strong>${sanitizeText(member.name || "সদস্য")}</strong><br>এই মাসে বর্তমান অতিরিক্ত জমা: <strong>৳ ${formatMoney(monthExtra)}</strong><br>এখন <strong>৳ ${formatMoney(amount)}</strong> দিলে এটি <strong>অতিরিক্ত জমা</strong> হিসেবে যোগ হবে।`;
+        return;
+    }
+
+    const plan = buildFillDuePlan(member.id, amount, selectedMonth.key);
+
+    const previewText = plan.dueSlots.length
+        ? plan.dueSlots.slice(0, 4).map(item => item.label).join("<br>") + (plan.dueSlots.length > 4 ? `<br>... আরও ${plan.dueSlots.length - 4} টি ঘর` : "")
+        : "কোন ঘর পাওয়া যায়নি বা টাকার পরিমাণ ১০ টাকার কম।";
+
+    let resultText = "";
+    if (plan.reason === "less_than_one_week") {
+        resultText = `৳ ${formatMoney(amount)} দিয়ে ১টি ঘরও পূরণ হবে না। পুরো টাকা অতিরিক্ত হিসেবে যোগ হবে।`;
+    } else if (plan.reason === "no_due_slots") {
+        resultText = `সিলেক্ট করা মাস থেকে সামনে কোনো unpaid ঘর নেই। পুরো টাকা অতিরিক্ত হিসেবে যোগ হবে।`;
+    } else if (plan.dueSlots.length > 0 && plan.leftover > 0) {
+        resultText = `${plan.dueSlots.length} টি ঘর পূরণ হবে, বাকি <strong>৳ ${formatMoney(plan.leftover)}</strong> অতিরিক্ত হিসেবে যোগ হবে।`;
+    } else if (plan.dueSlots.length > 0) {
+        resultText = `${plan.dueSlots.length} টি ঘর পূরণ হবে। কোনো টাকা অতিরিক্ত থাকবে না।`;
+    } else {
+        resultText = `হিসাব দেখুন।`;
+    }
+
+    extraSummary.innerHTML = `নির্বাচিত সদস্য: <strong>${sanitizeText(member.name || "সদস্য")}</strong><br>মোট জমা: <strong>৳ ${formatMoney(grand.totalPaid)}</strong><br>এখন <strong>৳ ${formatMoney(amount)}</strong> দিলে <strong>${selectedMonth.label}</strong> মাস থেকে শুরু করে পরের মাসগুলোর unpaid ঘর পূরণ হবে।<br><br>${resultText}<br><br>${previewText}`;
+}
+
+function renderExtraMemberSearch() {
+    const resultMembers = getSelectableExtraMembers().slice(0, 12);
+    if (!resultMembers.length) {
+        extraMemberResults.innerHTML = `<div class="extra-summary">কোন সদস্য পাওয়া যায়নি।</div>`;
+        return;
+    }
+
+    extraMemberResults.innerHTML = resultMembers.map((member) => `
+        <button type="button" class="member-search-item ${member.id === selectedExtraMemberId ? "active" : ""}" data-select-extra-member="${member.id}">
+            <div class="member-search-name">${sanitizeText(member.name || "নাম নেই")}</div>
+            <div class="member-search-meta">📞 ${sanitizeText(member.phone || "ফোন নেই")} • মোট জমা ৳ ${formatMoney(member.totalPaid || 0)}</div>
+        </button>
+    `).join("");
+
+    extraMemberResults.querySelectorAll('[data-select-extra-member]').forEach((btn) => {
+        btn.addEventListener("click", () => {
+            selectedExtraMemberId = btn.dataset.selectExtraMember || "";
+            renderExtraMemberSearch();
+            updateExtraSummary();
+        });
+    });
+}
+
+async function saveSeparateExtraAmount(memberId, monthKey, amount) {
+    const safeAmount = normalizeAmount(amount);
+    if (!memberId || !monthKey) return;
+    if (!savings[memberId]) savings[memberId] = {};
+    if (!savings[memberId][monthKey]) savings[memberId][monthKey] = {};
+
+    const nowTs = Date.now();
+    const current = normalizeAmount(savings[memberId][monthKey].extraAmount || 0);
+    savings[memberId][monthKey].extraAmount = current + safeAmount;
+    savings[memberId][monthKey].extraUpdatedAt = nowTs;
+    savings[memberId][monthKey].updatedAt = nowTs;
+
+    render();
+    setSaveStatus("⟳ অতিরিক্ত টাকা সংরক্ষণ হচ্ছে...", "saving");
+
+    try {
+        await update(ref(db), {
+            [`member_savings/${memberId}/${monthKey}/extraAmount`]: current + safeAmount,
+            [`member_savings/${memberId}/${monthKey}/extraUpdatedAt`]: nowTs,
+            [`member_savings/${memberId}/${monthKey}/updatedAt`]: nowTs
+        });
+        queueSync();
+    } catch (error) {
+        console.error("Extra amount save error:", error);
+        setSaveStatus("⚠️ অতিরিক্ত টাকা save করতে সমস্যা হয়েছে", "error");
+    }
+}
+
+async function applyDueFill(memberId, monthKey, amount) {
+    const plan = buildFillDuePlan(memberId, amount, monthKey);
+    const nowTs = Date.now();
+    const updates = {};
+
+    if (!memberId || !monthKey) return;
+    if (!savings[memberId]) savings[memberId] = {};
+
+    for (const slot of plan.dueSlots) {
+        if (!savings[memberId][slot.monthKey]) savings[memberId][slot.monthKey] = {};
+        savings[memberId][slot.monthKey][slot.weekKey] = true;
+        savings[memberId][slot.monthKey].updatedAt = nowTs;
+
+        updates[`member_savings/${memberId}/${slot.monthKey}/${slot.weekKey}`] = true;
+        updates[`member_savings/${memberId}/${slot.monthKey}/updatedAt`] = nowTs;
+    }
+
+    if (plan.leftover > 0) {
+        if (!savings[memberId][monthKey]) savings[memberId][monthKey] = {};
+        const currentExtra = normalizeAmount(savings[memberId][monthKey]?.extraAmount || 0);
+        const nextExtra = currentExtra + plan.leftover;
+
+        savings[memberId][monthKey].extraAmount = nextExtra;
+        savings[memberId][monthKey].extraUpdatedAt = nowTs;
+        savings[memberId][monthKey].updatedAt = nowTs;
+
+        updates[`member_savings/${memberId}/${monthKey}/extraAmount`] = nextExtra;
+        updates[`member_savings/${memberId}/${monthKey}/extraUpdatedAt`] = nowTs;
+        updates[`member_savings/${memberId}/${monthKey}/updatedAt`] = nowTs;
+    }
+
+    if (!Object.keys(updates).length) {
+        setSaveStatus("⚠️ সঠিক টাকার পরিমাণ দিন", "error");
+        return;
+    }
+
+    render();
+    setSaveStatus("⟳ ঘর পূরণ/অতিরিক্ত হিসাব সংরক্ষণ হচ্ছে...", "saving");
+
+    try {
+        await update(ref(db), updates);
+        queueSync();
+
+        if (plan.dueSlots.length > 0 && plan.leftover > 0) {
+            setSaveStatus(`✓ ${plan.dueSlots.length} টি ঘর পূরণ হয়েছে, বাকি ৳ ${formatMoney(plan.leftover)} অতিরিক্ত হিসেবে যোগ হয়েছে`, "success");
+        } else if (plan.dueSlots.length > 0 && plan.leftover === 0) {
+            setSaveStatus(`✓ ${plan.dueSlots.length} টি ঘর পূরণ হয়েছে`, "success");
+        } else if (plan.leftover > 0) {
+            setSaveStatus(`✓ কোনো ঘর পূরণ হয়নি, ৳ ${formatMoney(plan.leftover)} অতিরিক্ত হিসেবে যোগ হয়েছে`, "success");
+        } else {
+            setSaveStatus("✓ পরিবর্তন সংরক্ষিত", "success");
+        }
+    } catch (error) {
+        console.error("Due fill save error:", error);
+        setSaveStatus("⚠️ ঘর পূরণ করতে সমস্যা হয়েছে", "error");
+    }
+}
+
+function render() {
+    const selectedMonth = getSelectedMonth();
+    const fridays = getFridays(selectedMonth.year, selectedMonth.month);
+    const fridayCount = fridays.length;
+    const searchValue = sanitizeText(searchInput.value).toLowerCase();
+    const visibleMembers = members.filter(member => shouldShowMember(member, searchValue));
+
+    totalFridaysEl.textContent = fridayCount.toLocaleString("bn-BD");
+    totalMembersEl.textContent = visibleMembers.length.toLocaleString("bn-BD");
+
+    if (!visibleMembers.length) {
+        table.innerHTML = `
+            <div class="empty-state">
+                <h3>কোনো সদস্য পাওয়া যায়নি</h3>
+                <p>নাম বা ফোন নম্বর দিয়ে আবার খুঁজে দেখুন।</p>
+            </div>
+        `;
+        checkedBoxesEl.textContent = "0";
+        footerInfo.textContent = `${selectedMonth.label} মাসে কোনো সদস্য দেখানো যাচ্ছে না`;
+        renderExtraMemberSearch();
+        updateExtraSummary();
+        return;
+    }
+
+    let checkedCount = 0;
+    let monthExtraTotal = 0;
+    let html = "";
+
+    visibleMembers.forEach((member) => {
+        const monthData = getMemberMonthData(member.id, selectedMonth.key);
+        const extraAmount = normalizeAmount(monthData.extraAmount || 0);
+        monthExtraTotal += extraAmount;
+
+        html += `
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="avatar">${getMemberInitial(member.name)}</div>
+                    <div class="member-info">
+                        <div class="member-name">${sanitizeText(member.name || "নাম নেই")}</div>
+                        <div class="member-meta">
+                            <span class="tag">📞 ${sanitizeText(member.phone || "ফোন নেই")}</span>
+                            <span class="tag">💳 মোট জমা: ৳ ${formatMoney(member.totalPaid || 0)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weeks-grid">
+        `;
+
+        for (let i = 1; i <= fridayCount; i++) {
+            const key = `week${i}`;
+            const value = monthData[key] === true;
+            if (value) checkedCount++;
+
+            html += `
+                <label class="week-box ${value ? "checked" : "unchecked"}">
+                    <div class="week-label">
+                        <strong>শুক্র-${i}</strong>
+                        <span>তারিখ: ${fridays[i - 1]}</span>
+                    </div>
+
+                    <input
+                        type="checkbox"
+                        ${value ? "checked" : ""}
+                        data-member-id="${member.id}"
+                        data-month-key="${selectedMonth.key}"
+                        data-week-key="${key}"
+                    />
+
+                    <div class="week-state">${value ? "Paid" : "Due"}</div>
+                </label>
+            `;
+        }
+
+        html += `
+                </div>
+            </div>
+        `;
+    });
+
+    table.innerHTML = html;
+    checkedBoxesEl.textContent = checkedCount.toLocaleString("bn-BD");
+
+    const regularMonthTotal = checkedCount * WEEKLY_AMOUNT;
+    const combinedMonthTotal = regularMonthTotal + monthExtraTotal;
+    footerInfo.textContent = `${selectedMonth.label} মাসে মোট আদায়: ৳ ${formatMoney(combinedMonthTotal)} • নিয়মিত সঞ্চয়: ৳ ${formatMoney(regularMonthTotal)} • অতিরিক্ত জমা: ৳ ${formatMoney(monthExtraTotal)} • সদস্য: ${visibleMembers.length.toLocaleString("bn-BD")} জন`;
+
+    bindCheckboxEvents();
+    renderExtraMemberSearch();
+    updateExtraSummary();
+}
+
+function queueSync() {
+    if (!membersLoaded || !savingsLoaded || !members.length) return;
+    if (syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+        syncTimer = null;
+        syncMemberTotalsToMainPage();
+    }, SYNC_DEBOUNCE_MS);
+}
+
+async function syncMemberTotalsToMainPage() {
+    if (syncInProgress) {
+        syncQueued = true;
+        return;
+    }
+
+    syncInProgress = true;
+    try {
+        const memberSnap = await get(ref(db, "charity_members"));
+        const currentMembersData = memberSnap.val() || {};
+        const updates = {};
+        let changedCount = 0;
+
+        members.forEach((member) => {
+            if (!member?.id) return;
+            if (!Object.prototype.hasOwnProperty.call(currentMembersData, member.id)) return;
+
+            const totals = calculateMemberGrandTotal(member.id);
+            const current = currentMembersData[member.id] || {};
+
+            const needsUpdate =
+                Number(current.totalPaid || 0) !== totals.totalPaid ||
+                sanitizeText(current.lastPaidDate || "") !== totals.lastPaidDate ||
+                Number(current.lastPaidAt || 0) !== totals.lastPaidAt;
+
+            if (needsUpdate) {
+                updates[`charity_members/${member.id}/totalPaid`] = totals.totalPaid;
+                updates[`charity_members/${member.id}/lastPaidDate`] = totals.lastPaidDate;
+                updates[`charity_members/${member.id}/lastPaidAt`] = totals.lastPaidAt;
+                updates[`charity_members/${member.id}/updatedAt`] = Date.now();
+                changedCount++;
+            }
+        });
+
+        if (changedCount > 0) {
+            await update(ref(db), updates);
+            setSaveStatus(`✓ ${changedCount.toLocaleString("bn-BD")} জন সদস্যের মোট সঞ্চয় sync হয়েছে`, "success");
+        } else {
+            setSaveStatus("✓ সব পরিবর্তন সংরক্ষিত", "success");
+        }
+    } catch (error) {
+        console.error("Sync error:", error);
+        setSaveStatus("⚠️ sync করতে সমস্যা হয়েছে", "error");
+    } finally {
+        syncInProgress = false;
+        if (syncQueued) {
+            syncQueued = false;
+            queueSync();
+        }
+    }
+}
+
+async function handleCheckboxChange(event) {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const memberId = input.dataset.memberId;
+    const monthKey = input.dataset.monthKey;
+    const weekKey = input.dataset.weekKey;
+    const checked = input.checked;
+
+    if (!memberId || !monthKey || !weekKey) return;
+
+    if (!savings[memberId]) savings[memberId] = {};
+    if (!savings[memberId][monthKey]) savings[memberId][monthKey] = {};
+    savings[memberId][monthKey][weekKey] = checked;
+    savings[memberId][monthKey].updatedAt = Date.now();
+
+    render();
+    setSaveStatus("⟳ পরিবর্তন সংরক্ষণ হচ্ছে...", "saving");
+
+    try {
+        await update(ref(db), {
+            [`member_savings/${memberId}/${monthKey}/${weekKey}`]: checked,
+            [`member_savings/${memberId}/${monthKey}/updatedAt`]: Date.now()
+        });
+        queueSync();
+    } catch (error) {
+        console.error("Save error:", error);
+        setSaveStatus("⚠️ save করতে সমস্যা হয়েছে", "error");
+    }
+}
+
+function bindCheckboxEvents() {
+    table.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", handleCheckboxChange);
+    });
+}
+
+onValue(ref(db, "charity_members"), (snap) => {
+    const arr = [];
+    snap.forEach((child) => {
+        arr.push({
+            id: child.key,
+            ...(child.val() || {})
+        });
+    });
+    members = arr;
+    membersLoaded = true;
+    render();
+    queueSync();
+}, (error) => {
+    console.error("charity_members load error:", error);
+    setSaveStatus("⚠️ সদস্য ডাটা লোড করা যায়নি", "error");
+});
+
+onValue(ref(db, "member_savings"), (snap) => {
+    savings = snap.val() || {};
+    savingsLoaded = true;
+    render();
+    queueSync();
+}, (error) => {
+    console.error("member_savings load error:", error);
+    setSaveStatus("⚠️ সঞ্চয় ডাটা লোড করা যায়নি", "error");
+});
+
+monthSelect.addEventListener("change", () => {
+    render();
+    updateExtraSummary();
+});
+
+searchInput.addEventListener("input", render);
+extraMemberSearch.addEventListener("input", renderExtraMemberSearch);
+extraTypeSelect.addEventListener("change", updateExtraSummary);
+extraAmountInput.addEventListener("input", updateExtraSummary);
+
+extraAmountInput.addEventListener("keydown", async (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    saveExtraActionBtn.click();
+});
+
+previewExtraActionBtn.addEventListener("click", updateExtraSummary);
+
+clearExtraSelectionBtn.addEventListener("click", () => {
+    selectedExtraMemberId = "";
+    extraMemberSearch.value = "";
+    extraAmountInput.value = "";
+    extraTypeSelect.value = "extra";
+    renderExtraMemberSearch();
+    updateExtraSummary();
+});
+
+saveExtraActionBtn.addEventListener("click", async () => {
+    const member = getSelectedExtraMember();
+    const amount = normalizeAmount(extraAmountInput.value || 0);
+    const selectedMonth = getSelectedMonth();
+
+    if (!member) {
+        setSaveStatus("⚠️ আগে একজন সদস্য নির্বাচন করুন", "error");
+        return;
+    }
+    if (amount <= 0) {
+        setSaveStatus("⚠️ সঠিক টাকার পরিমাণ দিন", "error");
+        return;
+    }
+
+    if (extraTypeSelect.value === "extra") {
+        await saveSeparateExtraAmount(member.id, selectedMonth.key, amount);
+    } else {
+        await applyDueFill(member.id, selectedMonth.key, amount);
+    }
+
+    extraAmountInput.value = "";
+    renderExtraMemberSearch();
+    updateExtraSummary();
+});
+
+goTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+render();
+</script>
+</body>
+</html>

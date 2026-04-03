@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title> অ্যাডমিন প্যানেল </title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --bg: #f3f6fb;
+            --card-bg: #ffffff;
+            --card-soft: #f8fbff;
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
+            --shadow-xl: 0 24px 50px rgba(15, 23, 42, 0.16);
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 28px;
+            --radius-full: 999px;
+            --transition-fast: 0.18s ease;
+            --transition-base: 0.28s ease;
+            --primary-grad: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            --soft-grad: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+            --success-grad: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 28%),
+                radial-gradient(circle at top right, rgba(124, 58, 237, 0.10), transparent 24%),
+                var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 18px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .admin-container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding-bottom: 92px;
+        }
+
+        .admin-header {
+            background: var(--primary-grad);
+            color: #fff;
+            border-radius: var(--radius-lg);
+            padding: 34px 24px 28px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .admin-header::before,
+        .admin-header::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            z-index: -1;
+        }
+
+        .admin-header::before {
+            width: 220px;
+            height: 220px;
+            top: -80px;
+            right: -70px;
+        }
+
+        .admin-header::after {
+            width: 160px;
+            height: 160px;
+            bottom: -70px;
+            left: -50px;
+        }
+
+        .admin-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,.16);
+            border: 1px solid rgba(255,255,255,.22);
+            padding: 10px 14px;
+            border-radius: var(--radius-full);
+            font-size: .88rem;
+            font-weight: 700;
+            backdrop-filter: blur(8px);
+        }
+
+        .admin-header h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .admin-header p {
+            opacity: .95;
+            font-size: .98rem;
+            max-width: 560px;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .quick-link {
+            background: var(--card-bg);
+            border: 1px solid rgba(37, 99, 235, 0.10);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .quick-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-link-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            font-size: 1.2rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .quick-link.primary .quick-link-icon { background: var(--primary-grad); }
+        .quick-link.success .quick-link-icon { background: var(--success-grad); }
+
+        .quick-link h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .quick-link p {
+            font-size: .83rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,.94);
+            border: 1px solid rgba(255,255,255,.7);
+            border-radius: var(--radius-md);
+            padding: 16px 14px;
+            text-align: left;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(6px);
+        }
+
+        .stat-box h4 {
+            font-size: .82rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .stat-box .value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .stat-box .meta {
+            font-size: .78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .tab-nav-wrap {
+            position: sticky;
+            top: 10px;
+            z-index: 60;
+            margin-bottom: 18px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px;
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(226,232,240,.95);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-nav::-webkit-scrollbar-thumb {
+            background: rgba(37,99,235,.45);
+            border-radius: 999px;
+        }
+
+        .tab-btn,
+        .savings-nav-btn {
+            border: none;
+            border-radius: var(--radius-full);
+            background: #fff;
+            color: var(--text-secondary);
+            padding: 11px 18px;
+            min-height: 46px;
+            font-size: .92rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            box-shadow: 0 1px 0 rgba(15,23,42,.03);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            font-family: inherit;
+            border: 1px solid transparent;
+        }
+
+        .tab-btn:hover,
+        .savings-nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-grad);
+            color: #fff;
+            border-color: rgba(37,99,235,.28);
+        }
+
+        .savings-nav-btn {
+            background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);
+            color: #065f46;
+            border-color: rgba(16,185,129,.16);
+        }
+
+        .savings-nav-btn i {
+            color: #059669;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 18px;
+            border: 1px solid rgba(226,232,240,.95);
+            animation: slideUp .28s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card h3 {
+            font-size: 1.18rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-head {
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: .9rem;
+            margin-top: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: .92rem;
+            color: var(--text-main);
+        }
+
+        .field-note {
+            display: block;
+            margin-top: 7px;
+            font-size: .78rem;
+            color: var(--text-muted);
+        }
+
+        .required::after {
+            content: " *";
+            color: var(--danger);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: var(--card-soft);
+            border: 1.8px solid var(--border);
+            border-radius: 16px;
+            padding: 13px 14px;
+            font: inherit;
+            color: var(--text-main);
+            transition: all var(--transition-fast);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            background: #fff;
+            border-color: rgba(37,99,235,.55);
+            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 108px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 16px;
+            padding: 14px 20px;
+            font: inherit;
+            font-size: .94rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all var(--transition-base);
+        }
+
+        .btn-primary {
+            width: 100%;
+            color: #fff;
+            background: var(--primary-grad);
+            box-shadow: 0 14px 22px rgba(37,99,235,.18);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 30px rgba(37,99,235,.22);
+        }
+
+        .btn-warning {
+            background: #fff7ed;
+            color: #b45309;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-small {
+            padding: 10px 12px;
+            font-size: .82rem;
+            border-radius: 13px;
+            font-weight: 700;
+        }
+
+        .btn-warning:hover,
+        .btn-danger:hover {
+            transform: translateY(-1px);
+        }
+
+        .data-list {
+            margin-top: 16px;
+        }
+
+        .data-list-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .list-stack {
+            display: grid;
+            gap: 12px;
+        }
+
+        .list-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+        }
+
+        .list-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .list-item-content {
+            min-width: 0;
+        }
+
+        .list-item-title {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .list-item-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 10px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 700;
+            background: #f8fafc;
+            color: var(--text-secondary);
+            border: 1px solid #e5edf7;
+        }
+
+        .list-item-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .list-item-amount {
+            font-size: 1.06rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            white-space: nowrap;
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px 18px;
+            color: var(--text-muted);
+            background: linear-gradient(135deg, #fbfdff 0%, #f8fafc 100%);
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+        }
+
+        .empty-state i {
+            font-size: 2.3rem;
+            display: block;
+            margin-bottom: 10px;
+            opacity: .35;
+        }
+
+        .hidden { display: none !important; }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid;
+            animation: slideDown .28s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert-success {
+            background: var(--success-light);
+            color: #065f46;
+            border-left-color: var(--success);
+        }
+
+        .alert-error {
+            background: var(--danger-light);
+            color: #991b1b;
+            border-left-color: var(--danger);
+        }
+
+        .alert-warning {
+            background: var(--warning-light);
+            color: #92400e;
+            border-left-color: var(--warning);
+        }
+
+        .loading {
+            opacity: .65;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin .75s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.58);
+            z-index: 1000;
+            padding: 18px;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal.show { display: flex; }
+
+        .modal-content {
+            width: 100%;
+            max-width: 560px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--card-bg);
+            border-radius: 26px;
+            box-shadow: var(--shadow-xl);
+            padding: 24px;
+            animation: slideUp .25s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: none;
+            border-radius: 50%;
+            background: #f8fafc;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .modal-close:hover {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .floating-savings-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 80;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: var(--radius-full);
+            color: #fff;
+            background: var(--success-grad);
+            box-shadow: 0 18px 26px rgba(5, 150, 105, .30);
+            font-weight: 800;
+            animation: floatPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes floatPulse {
+            0%, 100% { transform: translateY(0); box-shadow: 0 18px 26px rgba(5, 150, 105, .30); }
+            50% { transform: translateY(-4px); box-shadow: 0 22px 30px rgba(5, 150, 105, .36); }
+        }
+
+        @media (max-width: 720px) {
+            body { padding: 14px; }
+            .admin-container { padding-bottom: 100px; }
+            .admin-header { padding: 24px 18px 22px; }
+            .admin-header-top { flex-direction: column; align-items: flex-start; margin-bottom: 14px; }
+            .admin-header h1 { font-size: 1.38rem; }
+            .quick-links { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .form-grid { grid-template-columns: 1fr; }
+            .card { padding: 18px; }
+            .list-item { grid-template-columns: 1fr; }
+            .list-item-side,
+            .list-item-actions { width: 100%; justify-content: stretch; }
+            .list-item-actions .btn { flex: 1; }
+            .modal-content { padding: 20px; border-radius: 22px; }
+            .floating-savings-btn span:last-child { display: none; }
+        }
+
+        @media (max-width: 420px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-box { padding: 14px 12px; }
+            .tab-btn, .savings-nav-btn { padding: 10px 14px; font-size: .88rem; min-height: 44px; }
+            .modal-actions { grid-template-columns: 1fr; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="admin-header-top">
+                <div class="header-badge"><i class="fas fa-shield-heart"></i> স্মার্ট কন্ট্রোল সেন্টার</div>
+                <div class="header-badge"><i class="fas fa-mobile-screen-button"></i> Mobile Friendly</div>
+            </div>
+            <h1><i class="fas fa-shield-alt"></i> প্রো অ্যাডমিন প্যানেল</h1>
+            <p>সদস্য, খরচ, অনুদান এবং সাইট সেটিংস এখন আরো সহজ, পরিষ্কার ও সুন্দরভাবে ম্যানেজ করা যাবে।</p>
+        </header>
+
+        <div class="quick-links">
+            <a href="#members" class="quick-link primary" onclick="APP.switchTab('members', document.querySelectorAll('.tab-btn')[1])">
+                <div class="quick-link-icon"><i class="fas fa-user-plus"></i></div>
+                <div>
+                    <h4>দ্রুত সদস্য যোগ</h4>
+                    <p>নাম ও পদবী দিলেই সদস্য যোগ করা যাবে</p>
+                </div>
+            </a>
+            <a href="admin1.html" class="quick-link success">
+                <div class="quick-link-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <div>
+                    <h4>সঞ্চয় পেজে যান</h4>
+                    <p>নতুন সঞ্চয় বাটন এখন সঠিকভাবে কাজ করবে</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h4>মোট সদস্য</h4>
+                <div class="value" id="statMembers">০</div>
+                <div class="meta">বর্তমান রেজিস্টার্ড</div>
+            </div>
+            <div class="stat-box">
+                <h4>মোট সঞ্চয়</h4>
+                <div class="value" id="statSavings">৳ ০</div>
+                <div class="meta">সদস্য সঞ্চয়</div>
+            </div>
+            <div class="stat-box">
+                <h4>মোট ব্যয়</h4>
+                <div class="value" id="statExpenses">৳ ০</div>
+                <div class="meta">রেকর্ডকৃত খরচ</div>
+            </div>
+            <div class="stat-box">
+                <h4>মোট অনুমোদিত দান</h4>
+                <div class="value" id="statDonations">৳ ০</div>
+                <div class="meta">মূল হিসাবের সাথে যুক্ত</div>
+            </div>
+            <div class="stat-box">
+                <h4>পেন্ডিং দান</h4>
+                <div class="value" id="statPendingDonations">০</div>
+                <div class="meta">এপ্রুভের অপেক্ষায়</div>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="tab-nav-wrap">
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="APP.switchTab('settings', this)">
+                    <i class="fas fa-cog"></i> সেটিংস
+                </button>
+                <button class="tab-btn" onclick="APP.switchTab('members', this)">
+                    <i class="fas fa-users"></i> সদস্য
+                </button>
+                <button class="tab-btn" onclick="APP.switchTab('expenses', this)">
+                    <i class="fas fa-minus-circle"></i> ব্যয়
+                </button>
+                <button class="tab-btn" onclick="APP.switchTab('donations', this)">
+                    <i class="fas fa-heart"></i> অনুদান
+                </button>
+                <a href="admin1.html" class="savings-nav-btn" title="সঞ্চয় পেজ খুলুন">
+                    <i class="fas fa-piggy-bank"></i> সঞ্চয়
+                </a>
+            </div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-sliders"></i> লাইভ সেটিংস আপডেট</h3>
+                    <p class="card-subtitle">এই সেকশন থেকে সাইটের নম্বর ও নোটিশ দ্রুত পরিবর্তন করা যাবে।</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="set-phone">বিকাশ/নগদ নম্বর</label>
+                    <input type="text" id="set-phone" placeholder="উদাহরণ: 01700000000" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="set-notice">চলমান নোটিশ / ঘোষণা</label>
+                    <textarea id="set-notice" placeholder="এখানে গুরুত্বপূর্ণ বার্তা লিখুন..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="APP.saveSettings(this)">
+                    <i class="fas fa-save"></i> সেটিংস সংরক্ষণ করুন
+                </button>
+            </div>
+        </div>
+
+        <div id="members" class="tab-content hidden">
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-user-plus"></i> নতুন সদস্য যোগ করুন</h3>
+                    <p class="card-subtitle">শুধু নাম এবং পদবী বাধ্যতামূলক। ফোন ও সঞ্চয় পরে এডিট থেকেও আপডেট করা যাবে।</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="m-name" class="required">সদস্যের নাম</label>
+                        <input type="text" id="m-name" placeholder="সম্পূর্ণ নাম" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="m-role" class="required">পদবী/ভূমিকা</label>
+                        <select id="m-role">
+                            <option value="সদস্য">সদস্য</option>
+                            <option value="সক্রিয় সদস্য">সক্রিয় সদস্য</option>
+                            <option value="প্রতিষ্ঠাতা">প্রতিষ্ঠাতা</option>
+                            <option value="উপ-প্রধান">উপ-প্রধান</option>
+                            <option value="কোষাধ্যক্ষ">কোষাধ্যক্ষ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="m-phone">ফোন নম্বর (ঐচ্ছিক)</label>
+                        <input type="tel" id="m-phone" placeholder="01700000000" maxlength="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="m-total">মোট সঞ্চয় - টাকা (ঐচ্ছিক)</label>
+                        <input type="number" id="m-total" placeholder="০" min="0">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="APP.addMember(this)">
+                    <i class="fas fa-plus"></i> সদস্য যোগ করুন
+                </button>
+            </div>
+
+            <div class="data-list" id="member-list"></div>
+        </div>
+
+        <div id="expenses" class="tab-content hidden">
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-minus-circle"></i> নতুন খরচ রেকর্ড করুন</h3>
+                    <p class="card-subtitle">খরচের কারণ, পরিমাণ এবং বিভাগ দ্রুত সংরক্ষণ করুন।</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="e-reason" class="required">খরচের কারণ</label>
+                        <input type="text" id="e-reason" placeholder="যেমন: ওষুধের খরচ" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="e-amount" class="required">টাকার পরিমাণ</label>
+                        <input type="number" id="e-amount" placeholder="০" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="e-category">বিভাগ/খাত</label>
+                        <select id="e-category">
+                            <option value="চিকিৎসা সহায়তা">চিকিৎসা সহায়তা</option>
+                            <option value="খাদ্য সহায়তা">খাদ্য সহায়তা</option>
+                            <option value="শিক্ষা সহায়তা">শিক্ষা সহায়তা</option>
+                            <option value="জরুরি সাহায্য">জরুরি সাহায্য</option>
+                            <option value="অফিস খরচ">অফিস খরচ</option>
+                            <option value="পরিবহন">পরিবহন</option>
+                            <option value="অন্যান্য">অন্যান্য</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="APP.addExpense(this)">
+                    <i class="fas fa-plus"></i> খরচ যোগ করুন
+                </button>
+            </div>
+
+            <div class="data-list" id="expense-list"></div>
+        </div>
+
+        <div id="donations" class="tab-content hidden">
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-hourglass-half"></i> ওয়েবসাইট থেকে জমা হওয়া পেন্ডিং অনুদান</h3>
+                    <p class="card-subtitle">index.html থেকে নাম ও amount দিয়ে submit করা তথ্য এখানে আসবে। আগে দেখে নিন, দরকার হলে edit করুন, তারপর approve করুন।</p>
+                </div>
+                <div class="data-list" id="pending-donation-list"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-heart"></i> অ্যাডমিন থেকে সরাসরি অনুদান যোগ করুন</h3>
+                    <p class="card-subtitle">ক্যাশ, বিকাশ, নগদ বা ব্যাংক ট্রান্সফার সব অনুদান এক জায়গা থেকে ট্র্যাক করুন।</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="d-name" class="required">দাতার নাম</label>
+                        <input type="text" id="d-name" placeholder="নাম বা প্রতিষ্ঠানের নাম" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="d-amount" class="required">টাকার পরিমাণ</label>
+                        <input type="number" id="d-amount" placeholder="০" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="d-method">পেমেন্ট পদ্ধতি</label>
+                        <select id="d-method">
+                            <option value="cash">সরাসরি নগদ (Cash)</option>
+                            <option value="bkash">বিকাশ</option>
+                            <option value="nagad">নগদ মোবাইল</option>
+                            <option value="bank">ব্যাংক ট্রান্সফার</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="APP.addDonation(this)">
+                    <i class="fas fa-plus"></i> অনুদান যোগ করুন
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <h3><i class="fas fa-circle-check"></i> অনুমোদিত অনুদানের তালিকা</h3>
+                    <p class="card-subtitle">approve করা বা admin থেকে যোগ করা অনুদানগুলো এখানে থাকবে এবং এই ডেটাই index.html এর হিসাব অংশে দেখা যাবে।</p>
+                </div>
+                <div class="data-list" id="donation-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="memberEditModal" class="modal" onclick="APP.handleModalBackdrop(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-pen"></i> সদস্য তথ্য সম্পাদনা</h2>
+                <button class="modal-close" onclick="APP.closeMemberModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="edit-m-name" class="required">সদস্যের নাম</label>
+                    <input type="text" id="edit-m-name" placeholder="সম্পূর্ণ নাম" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-m-role" class="required">পদবী/ভূমিকা</label>
+                    <select id="edit-m-role">
+                        <option value="সদস্য">সদস্য</option>
+                        <option value="সক্রিয় সদস্য">সক্রিয় সদস্য</option>
+                        <option value="প্রতিষ্ঠাতা">প্রতিষ্ঠাতা</option>
+                        <option value="উপ-প্রধান">উপ-প্রধান</option>
+                        <option value="কোষাধ্যক্ষ">কোষাধ্যক্ষ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-m-phone">ফোন নম্বর</label>
+                    <input type="tel" id="edit-m-phone" placeholder="01700000000" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-m-total">মোট সঞ্চয় - টাকা</label>
+                    <input type="number" id="edit-m-total" placeholder="০" min="0">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="APP.saveMemberEdit(this)">
+                    <i class="fas fa-save"></i> পরিবর্তন সংরক্ষণ
+                </button>
+                <button class="btn btn-danger" onclick="APP.closeMemberModal()">
+                    <i class="fas fa-times"></i> বাতিল
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pendingDonationEditModal" class="modal" onclick="APP.handleModalBackdrop(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-pen"></i> পেন্ডিং অনুদান সম্পাদনা</h2>
+                <button class="modal-close" onclick="APP.closePendingDonationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label for="edit-pd-name" class="required">দাতার নাম</label>
+                    <input type="text" id="edit-pd-name" placeholder="দাতার নাম" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-pd-amount" class="required">টাকার পরিমাণ</label>
+                    <input type="number" id="edit-pd-amount" placeholder="০" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-pd-method" class="required">অনুমোদনের পদ্ধতি</label>
+                    <select id="edit-pd-method">
+                        <option value="bkash">বিকাশ</option>
+                        <option value="nagad">নগদ মোবাইল</option>
+                        <option value="cash">সরাসরি নগদ</option>
+                        <option value="bank">ব্যাংক ট্রান্সফার</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="edit-pd-note">অ্যাডমিন নোট (ঐচ্ছিক)</label>
+                    <textarea id="edit-pd-note" placeholder="প্রয়োজনে ছোট নোট লিখুন..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="APP.savePendingDonationEdit(this)">
+                    <i class="fas fa-save"></i> পরিবর্তন সংরক্ষণ
+                </button>
+                <button class="btn btn-danger" onclick="APP.closePendingDonationModal()">
+                    <i class="fas fa-times"></i> বাতিল
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <a href="admin1.html" class="floating-savings-btn" title="সঞ্চয় পেজ খুলুন">
+        <i class="fas fa-hand-holding-usd"></i>
+        <span>সঞ্চয়</span>
+    </a>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com"
+    };
+
+    let app, db;
+
+    try {
+        app = initializeApp(firebaseConfig);
+        db = getDatabase(app);
+    } catch (err) {
+        console.error("Firebase initialization error:", err);
+    }
+
+    window.APP = {
+        currentTab: 'settings',
+        editingMemberId: null,
+        editingPendingDonationId: null,
+
+        showAlert(message, type = 'success', duration = 3500) {
+            const container = document.getElementById('alertContainer');
+            if (!container) return;
+
+            const alertEl = document.createElement('div');
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle'
+            };
+
+            alertEl.className = `alert alert-${type}`;
+            alertEl.innerHTML = `<i class="${icons[type] || icons.success}"></i><span>${message}</span>`;
+            container.prepend(alertEl);
+
+            setTimeout(() => {
+                alertEl.style.opacity = '0';
+                alertEl.style.transform = 'translateY(-6px)';
+                setTimeout(() => alertEl.remove(), 220);
+            }, duration);
+        },
+
+        sanitize(text) {
+            return (text || '').toString().trim();
+        },
+
+        escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+            return this.sanitize(text).replace(/[&<>"']/g, m => map[m]);
+        },
+
+        validate(value, minLength = 1, label = 'Field') {
+            if (!this.sanitize(value) || this.sanitize(value).length < minLength) {
+                this.showAlert(`${label} সঠিক নয়। পুনরায় চেষ্টা করুন।`, 'warning');
+                return false;
+            }
+            return true;
+        },
+
+        formatCurrency(amount) {
+            return `৳ ${parseInt(amount || 0).toLocaleString('bn-BD')}`;
+        },
+
+        getMethodIcon(method) {
+            const icons = {
+                cash: 'fas fa-money-bill-wave',
+                bkash: 'fas fa-mobile-screen',
+                nagad: 'fas fa-mobile-screen',
+                bank: 'fas fa-building-columns',
+                pending: 'fas fa-hourglass-half'
+            };
+            return icons[method] || 'fas fa-gift';
+        },
+
+        getMethodLabel(method) {
+            const labels = {
+                cash: 'সরাসরি নগদ',
+                bkash: 'বিকাশ',
+                nagad: 'নগদ মোবাইল',
+                bank: 'ব্যাংক ট্রান্সফার',
+                pending: 'পেন্ডিং'
+            };
+            return labels[method] || this.sanitize(method || 'অন্যান্য');
+        },
+
+        buildDateTimeLabel(data = {}) {
+            const date = this.sanitize(data.date || '');
+            const time = this.sanitize(data.time || '');
+            return [date, time].filter(Boolean).join(' • ') || 'সম্প্রতি';
+        },
+
+        setButtonLoading(btn, isLoading, loadingText = 'প্রসেসিং...') {
+            if (!btn) return;
+            if (isLoading) {
+                btn.dataset.originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.classList.add('loading');
+                btn.innerHTML = `<span class="spinner"></span> ${loadingText}`;
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = btn.dataset.originalText || btn.innerHTML;
+            }
+        },
+
+        updateStat(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        },
+
+        switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+            const tab = document.getElementById(tabName);
+            if (tab) {
+                tab.classList.remove('hidden');
+                if (btn && btn.classList.contains('tab-btn')) btn.classList.add('active');
+                this.currentTab = tabName;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        },
+
+        handleModalBackdrop(event) {
+            if (event.target?.id === 'memberEditModal') {
+                this.closeMemberModal();
+            }
+            if (event.target?.id === 'pendingDonationEditModal') {
+                this.closePendingDonationModal();
+            }
+        },
+
+        decodeMemberData(encoded) {
+            try {
+                return JSON.parse(decodeURIComponent(encoded));
+            } catch (err) {
+                console.error('Member decode error:', err);
+                return {};
+            }
+        },
+
+        loadSettings() {
+            if (!db) return;
+
+            onValue(ref(db, 'settings'), (snap) => {
+                const data = snap.val() || {};
+                const phoneEl = document.getElementById('set-phone');
+                const noticeEl = document.getElementById('set-notice');
+
+                if (phoneEl) phoneEl.value = this.sanitize(data.payment_num || '');
+                if (noticeEl) noticeEl.value = this.sanitize(data.notice || '');
+            }, (err) => {
+                console.error('Error loading settings:', err);
+            });
+        },
+
+        saveSettings(btn) {
+            const phone = this.sanitize(document.getElementById('set-phone')?.value);
+            const notice = this.sanitize(document.getElementById('set-notice')?.value);
+
+            if (!this.validate(phone, 10, 'ফোন নম্বর')) return;
+            if (!this.validate(notice, 5, 'নোটিশ')) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            set(ref(db, 'settings'), {
+                payment_num: phone,
+                notice: notice
+            }).then(() => {
+                this.showAlert('সেটিংস সফলভাবে সংরক্ষিত হয়েছে।', 'success');
+            }).catch(err => {
+                console.error('Error saving settings:', err);
+                this.showAlert('সেটিংস সংরক্ষণ করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        addMember(btn) {
+            const name = this.sanitize(document.getElementById('m-name')?.value);
+            const role = this.sanitize(document.getElementById('m-role')?.value);
+            const phone = this.sanitize(document.getElementById('m-phone')?.value) || '';
+            const total = parseInt(document.getElementById('m-total')?.value) || 0;
+
+            if (!this.validate(name, 2, 'সদস্যের নাম')) return;
+            if (!this.validate(role, 1, 'পদবী')) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            push(ref(db, 'charity_members'), {
+                name,
+                role,
+                phone,
+                totalPaid: total,
+                joinDate: new Date().toLocaleDateString('bn-BD'),
+                timestamp: Date.now(),
+                createdAt: new Date().toISOString()
+            }).then(() => {
+                this.showAlert(`${name} সফলভাবে যোগ করা হয়েছে।`, 'success');
+                document.getElementById('m-name').value = '';
+                document.getElementById('m-role').value = 'সদস্য';
+                document.getElementById('m-total').value = '';
+                document.getElementById('m-phone').value = '';
+            }).catch(err => {
+                console.error('Error adding member:', err);
+                this.showAlert('সদস্য যোগ করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        openMemberModal(memberId, encodedMemberData) {
+            const memberData = this.decodeMemberData(encodedMemberData);
+            this.editingMemberId = memberId;
+
+            document.getElementById('edit-m-name').value = this.sanitize(memberData.name || '');
+            document.getElementById('edit-m-role').value = this.sanitize(memberData.role || 'সদস্য');
+            document.getElementById('edit-m-phone').value = this.sanitize(memberData.phone || '');
+            document.getElementById('edit-m-total').value = parseInt(memberData.totalPaid || 0);
+
+            document.getElementById('memberEditModal').classList.add('show');
+        },
+
+        closeMemberModal() {
+            document.getElementById('memberEditModal').classList.remove('show');
+            this.editingMemberId = null;
+        },
+
+        openPendingDonationModal(donationId, encodedDonationData) {
+            const donationData = this.decodeMemberData(encodedDonationData);
+            this.editingPendingDonationId = donationId;
+
+            document.getElementById('edit-pd-name').value = this.sanitize(donationData.name || '');
+            document.getElementById('edit-pd-amount').value = parseInt(donationData.amount || 0) || '';
+            document.getElementById('edit-pd-method').value = this.sanitize(donationData.method && donationData.method !== 'pending' ? donationData.method : 'bkash');
+            document.getElementById('edit-pd-note').value = this.sanitize(donationData.adminNote || '');
+
+            document.getElementById('pendingDonationEditModal').classList.add('show');
+        },
+
+        closePendingDonationModal() {
+            document.getElementById('pendingDonationEditModal').classList.remove('show');
+            this.editingPendingDonationId = null;
+        },
+
+        savePendingDonationEdit(btn) {
+            if (!this.editingPendingDonationId) {
+                this.showAlert('পেন্ডিং অনুদান খুঁজে পাওয়া যায়নি।', 'error');
+                return;
+            }
+
+            const name = this.sanitize(document.getElementById('edit-pd-name')?.value);
+            const amount = parseInt(document.getElementById('edit-pd-amount')?.value) || 0;
+            const method = this.sanitize(document.getElementById('edit-pd-method')?.value);
+            const adminNote = this.sanitize(document.getElementById('edit-pd-note')?.value);
+
+            if (!this.validate(name, 2, 'দাতার নাম')) return;
+            if (amount <= 0) {
+                this.showAlert('পরিমাণ শূন্যের চেয়ে বেশি হতে হবে।', 'warning');
+                return;
+            }
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            update(ref(db, `pending_donations/${this.editingPendingDonationId}`), {
+                name,
+                amount,
+                method,
+                adminNote,
+                updatedAt: new Date().toISOString(),
+                reviewed: false,
+                adminReceived: true
+            }).then(() => {
+                this.showAlert('পেন্ডিং অনুদানের তথ্য সফলভাবে আপডেট হয়েছে।', 'success');
+                this.closePendingDonationModal();
+            }).catch(err => {
+                console.error('Error updating pending donation:', err);
+                this.showAlert('পেন্ডিং অনুদান আপডেট করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        saveMemberEdit(btn) {
+            if (!this.editingMemberId) {
+                this.showAlert('সদস্য খুঁজে পাওয়া যায়নি।', 'error');
+                return;
+            }
+
+            const name = this.sanitize(document.getElementById('edit-m-name')?.value);
+            const role = this.sanitize(document.getElementById('edit-m-role')?.value);
+            const phone = this.sanitize(document.getElementById('edit-m-phone')?.value) || '';
+            const total = parseInt(document.getElementById('edit-m-total')?.value) || 0;
+
+            if (!this.validate(name, 2, 'সদস্যের নাম')) return;
+            if (!this.validate(role, 1, 'পদবী')) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            update(ref(db, `charity_members/${this.editingMemberId}`), {
+                name,
+                role,
+                phone,
+                totalPaid: total,
+                updatedAt: new Date().toISOString()
+            }).then(() => {
+                this.showAlert('সদস্য তথ্য সফলভাবে আপডেট হয়েছে।', 'success');
+                this.closeMemberModal();
+            }).catch(err => {
+                console.error('Error updating member:', err);
+                this.showAlert('আপডেট করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        loadMembers() {
+            if (!db) return;
+
+            onValue(ref(db, 'charity_members'), (snap) => {
+                const list = document.getElementById('member-list');
+                if (!list) return;
+                list.innerHTML = '';
+
+                if (!snap.exists()) {
+                    this.updateStat('statMembers', '০');
+                    this.updateStat('statSavings', '৳ ০');
+                    list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>কোন সদস্য নেই</p></div>';
+                    return;
+                }
+
+                const members = [];
+                let totalSavings = 0;
+
+                snap.forEach(child => {
+                    const data = child.val() || {};
+                    totalSavings += parseInt(data.totalPaid || 0);
+                    members.push({ key: child.key, data });
+                });
+
+                this.updateStat('statMembers', members.length.toLocaleString('bn-BD'));
+                this.updateStat('statSavings', this.formatCurrency(totalSavings));
+
+                const title = document.createElement('div');
+                title.className = 'data-list-title';
+                title.innerHTML = `<i class="fas fa-users"></i> সদস্য তালিকা (${members.length.toLocaleString('bn-BD')})`;
+                list.appendChild(title);
+
+                const stack = document.createElement('div');
+                stack.className = 'list-stack';
+                list.appendChild(stack);
+
+                members.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
+
+                members.forEach(({ key, data }) => {
+                    const encodedData = encodeURIComponent(JSON.stringify(data));
+                    const role = this.escapeHtml(data.role || 'সদস্য');
+                    const name = this.escapeHtml(data.name || '');
+                    const phone = this.escapeHtml(data.phone || '');
+                    const totalPaid = parseInt(data.totalPaid || 0);
+
+                    let meta = `<span class="meta-pill"><i class="fas fa-tag"></i>${role}</span>`;
+                    if (phone) meta += `<span class="meta-pill"><i class="fas fa-phone"></i>${phone}</span>`;
+                    meta += `<span class="meta-pill"><i class="fas fa-wallet"></i>সঞ্চয়: ${this.formatCurrency(totalPaid)}</span>`;
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <div class="list-item-content">
+                            <div class="list-item-title">${name}</div>
+                            <div class="list-item-meta">${meta}</div>
+                        </div>
+                        <div class="list-item-side">
+                            <div class="list-item-actions">
+                                <button class="btn btn-warning btn-small" onclick="APP.openMemberModal('${key}', '${encodedData}')">
+                                    <i class="fas fa-edit"></i> সম্পাদনা
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="APP.deleteMember('${key}', '${name.replace(/'/g, "\\'")}')">
+                                    <i class="fas fa-trash"></i> মুছুন
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    stack.appendChild(item);
+                });
+            }, (err) => {
+                console.error('Error loading members:', err);
+            });
+        },
+
+        deleteMember(memberId, name) {
+            if (!confirm(`"${name}" সদস্যকে মুছে ফেলতে নিশ্চিত?`)) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            remove(ref(db, `charity_members/${memberId}`))
+                .then(() => this.showAlert(`"${name}" সফলভাবে মুছে ফেলা হয়েছে।`, 'success'))
+                .catch(err => {
+                    console.error('Error deleting member:', err);
+                    this.showAlert('সদস্য মুছতে ব্যর্থ।', 'error');
+                });
+        },
+
+        addExpense(btn) {
+            const reason = this.sanitize(document.getElementById('e-reason')?.value);
+            const amount = parseInt(document.getElementById('e-amount')?.value) || 0;
+            const category = this.sanitize(document.getElementById('e-category')?.value);
+
+            if (!this.validate(reason, 2, 'খরচের কারণ')) return;
+            if (amount <= 0) {
+                this.showAlert('পরিমাণ শূন্যের চেয়ে বেশি হতে হবে।', 'warning');
+                return;
+            }
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            push(ref(db, 'charity_expenses'), {
+                reason,
+                amount,
+                category,
+                date: new Date().toLocaleDateString('bn-BD'),
+                timestamp: Date.now(),
+                createdAt: new Date().toISOString()
+            }).then(() => {
+                this.showAlert(`খরচ সফলভাবে যোগ করা হয়েছে।`, 'success');
+                document.getElementById('e-reason').value = '';
+                document.getElementById('e-amount').value = '';
+            }).catch(err => {
+                console.error('Error adding expense:', err);
+                this.showAlert('খরচ যোগ করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        loadExpenses() {
+            if (!db) return;
+
+            onValue(ref(db, 'charity_expenses'), (snap) => {
+                const list = document.getElementById('expense-list');
+                if (!list) return;
+                list.innerHTML = '';
+
+                if (!snap.exists()) {
+                    this.updateStat('statExpenses', '৳ ০');
+                    list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>কোন খরচ রেকর্ড নেই</p></div>';
+                    return;
+                }
+
+                const expenses = [];
+                let total = 0;
+
+                snap.forEach(child => {
+                    const data = child.val() || {};
+                    total += parseInt(data.amount || 0);
+                    expenses.push({ key: child.key, data });
+                });
+
+                this.updateStat('statExpenses', this.formatCurrency(total));
+
+                const title = document.createElement('div');
+                title.className = 'data-list-title';
+                title.innerHTML = `<i class="fas fa-list"></i> খরচের তালিকা (${expenses.length.toLocaleString('bn-BD')})`;
+                list.appendChild(title);
+
+                const stack = document.createElement('div');
+                stack.className = 'list-stack';
+                list.appendChild(stack);
+
+                expenses.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
+
+                expenses.forEach(({ key, data }) => {
+                    const reason = this.escapeHtml(data.reason || '');
+                    const category = this.escapeHtml(data.category || '');
+                    const date = this.escapeHtml(data.date || '');
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <div class="list-item-content">
+                            <div class="list-item-title">${reason}</div>
+                            <div class="list-item-meta">
+                                <span class="meta-pill"><i class="fas fa-folder-tree"></i>${category}</span>
+                                <span class="meta-pill"><i class="fas fa-calendar"></i>${date}</span>
+                            </div>
+                        </div>
+                        <div class="list-item-side">
+                            <div class="list-item-amount">${this.formatCurrency(data.amount)}</div>
+                            <div class="list-item-actions">
+                                <button class="btn btn-danger btn-small" onclick="APP.deleteExpense('${key}', '${reason.replace(/'/g, "\\'")}')">
+                                    <i class="fas fa-trash"></i> মুছুন
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    stack.appendChild(item);
+                });
+            }, (err) => {
+                console.error('Error loading expenses:', err);
+            });
+        },
+
+        deleteExpense(expenseId, reason) {
+            if (!confirm(`"${reason}" খরচটি মুছে ফেলতে নিশ্চিত?`)) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            remove(ref(db, `charity_expenses/${expenseId}`))
+                .then(() => this.showAlert(`"${reason}" সফলভাবে মুছে ফেলা হয়েছে।`, 'success'))
+                .catch(err => {
+                    console.error('Error deleting expense:', err);
+                    this.showAlert('খরচ মুছতে ব্যর্থ।', 'error');
+                });
+        },
+
+        addDonation(btn) {
+            const name = this.sanitize(document.getElementById('d-name')?.value);
+            const amount = parseInt(document.getElementById('d-amount')?.value) || 0;
+            const method = this.sanitize(document.getElementById('d-method')?.value);
+
+            if (!this.validate(name, 2, 'দাতার নাম')) return;
+            if (amount <= 0) {
+                this.showAlert('পরিমাণ শূন্যের চেয়ে বেশি হতে হবে।', 'warning');
+                return;
+            }
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true);
+
+            push(ref(db, 'outside_donations'), {
+                name,
+                amount,
+                method,
+                date: new Date().toLocaleDateString('bn-BD'),
+                timestamp: Date.now(),
+                createdAt: new Date().toISOString(),
+                source: 'admin_manual'
+            }).then(() => {
+                this.showAlert(`${name} এর অনুদান রেকর্ড করা হয়েছে।`, 'success');
+                document.getElementById('d-name').value = '';
+                document.getElementById('d-amount').value = '';
+            }).catch(err => {
+                console.error('Error adding donation:', err);
+                this.showAlert('অনুদান যোগ করতে ব্যর্থ।', 'error');
+            }).finally(() => {
+                this.setButtonLoading(btn, false);
+            });
+        },
+
+        loadPendingDonations() {
+            if (!db) return;
+
+            onValue(ref(db, 'pending_donations'), (snap) => {
+                const list = document.getElementById('pending-donation-list');
+                if (!list) return;
+                list.innerHTML = '';
+
+                const donations = [];
+
+                if (snap.exists()) {
+                    snap.forEach(child => {
+                        const data = child.val() || {};
+                        if ((data.status || 'pending') === 'pending') {
+                            donations.push({ key: child.key, data });
+                        }
+                    });
+                }
+
+                this.updateStat('statPendingDonations', donations.length.toLocaleString('bn-BD'));
+
+                if (donations.length === 0) {
+                    list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>কোন পেন্ডিং অনুদান নেই</p></div>';
+                    return;
+                }
+
+                const title = document.createElement('div');
+                title.className = 'data-list-title';
+                title.innerHTML = `<i class="fas fa-hourglass-half"></i> পেন্ডিং অনুদান (${donations.length.toLocaleString('bn-BD')})`;
+                list.appendChild(title);
+
+                const stack = document.createElement('div');
+                stack.className = 'list-stack';
+                list.appendChild(stack);
+
+                donations.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
+
+                donations.forEach(({ key, data }) => {
+                    const encodedData = encodeURIComponent(JSON.stringify(data));
+                    const name = this.escapeHtml(data.name || '');
+                    const amount = parseInt(data.amount || 0);
+                    const source = this.escapeHtml(data.source || 'website_form');
+                    const dateTime = this.escapeHtml(this.buildDateTimeLabel(data));
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <div class="list-item-content">
+                            <div class="list-item-title">${name}</div>
+                            <div class="list-item-meta">
+                                <span class="meta-pill"><i class="fas fa-clock"></i>${dateTime}</span>
+                                <span class="meta-pill"><i class="fas fa-globe"></i>${source}</span>
+                                <span class="meta-pill"><i class="fas fa-hourglass-half"></i>এপ্রুভের অপেক্ষায়</span>
+                            </div>
+                        </div>
+                        <div class="list-item-side">
+                            <div class="list-item-amount">${this.formatCurrency(amount)}</div>
+                            <div class="list-item-actions">
+                                <button class="btn btn-warning btn-small" onclick="APP.openPendingDonationModal('${key}', '${encodedData}')">
+                                    <i class="fas fa-edit"></i> ইডিট
+                                </button>
+                                <button class="btn btn-primary btn-small" onclick="APP.approvePendingDonation('${key}', '${encodedData}', this)">
+                                    <i class="fas fa-check"></i> অ্যাপ্রুভ
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="APP.removePendingDonation('${key}', '${name.replace(/'/g, "\'")}')">
+                                    <i class="fas fa-trash"></i> রিমুভ
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    stack.appendChild(item);
+                });
+            }, (err) => {
+                console.error('Error loading pending donations:', err);
+            });
+        },
+
+        approvePendingDonation(donationId, encodedDonationData, btn) {
+            const donationData = this.decodeMemberData(encodedDonationData);
+
+            const name = this.sanitize(donationData.name || '');
+            const amount = parseInt(donationData.amount || 0);
+            const selectedMethod = this.sanitize(donationData.method && donationData.method !== 'pending' ? donationData.method : 'bkash');
+            const adminNote = this.sanitize(donationData.adminNote || '');
+
+            if (!this.validate(name, 2, 'দাতার নাম')) return;
+            if (amount <= 0) {
+                this.showAlert('পরিমাণ শূন্যের চেয়ে বেশি হতে হবে।', 'warning');
+                return;
+            }
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            this.setButtonLoading(btn, true, 'অ্যাপ্রুভ হচ্ছে...');
+
+            const now = new Date();
+            const approvedPayload = {
+                name,
+                amount,
+                method: selectedMethod,
+                source: donationData.source || 'website_form',
+                date: this.buildDateTimeLabel(donationData),
+                submittedDate: this.sanitize(donationData.date || ''),
+                submittedTime: this.sanitize(donationData.time || ''),
+                originalTimestamp: donationData.timestamp || Date.now(),
+                adminNote,
+                approvedAt: now.toISOString(),
+                approvedDate: now.toLocaleDateString('bn-BD'),
+                approvedTime: now.toLocaleTimeString('bn-BD'),
+                reviewed: true,
+                status: 'approved',
+                timestamp: Date.now(),
+                createdAt: now.toISOString()
+            };
+
+            push(ref(db, 'outside_donations'), approvedPayload)
+                .then(() => remove(ref(db, `pending_donations/${donationId}`)))
+                .then(() => {
+                    this.showAlert(`${name} এর অনুদান সফলভাবে approve করা হয়েছে এবং মূল হিসাবের সাথে যুক্ত হয়েছে।`, 'success');
+                })
+                .catch(err => {
+                    console.error('Error approving donation:', err);
+                    this.showAlert('অনুদান approve করতে ব্যর্থ।', 'error');
+                })
+                .finally(() => {
+                    this.setButtonLoading(btn, false);
+                });
+        },
+
+        removePendingDonation(donationId, name) {
+            if (!confirm(`"${name}" এর পেন্ডিং অনুদান মুছে ফেলতে নিশ্চিত?`)) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            remove(ref(db, `pending_donations/${donationId}`))
+                .then(() => this.showAlert(`"${name}" এর পেন্ডিং অনুদান সফলভাবে মুছে ফেলা হয়েছে।`, 'success'))
+                .catch(err => {
+                    console.error('Error deleting pending donation:', err);
+                    this.showAlert('পেন্ডিং অনুদান মুছতে ব্যর্থ।', 'error');
+                });
+        },
+
+        loadDonations() {
+            if (!db) return;
+
+            onValue(ref(db, 'outside_donations'), (snap) => {
+                const list = document.getElementById('donation-list');
+                if (!list) return;
+                list.innerHTML = '';
+
+                if (!snap.exists()) {
+                    this.updateStat('statDonations', '৳ ০');
+                    list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>কোন অনুমোদিত অনুদান রেকর্ড নেই</p></div>';
+                    return;
+                }
+
+                const donations = [];
+                let total = 0;
+
+                snap.forEach(child => {
+                    const data = child.val() || {};
+                    total += parseInt(data.amount || 0);
+                    donations.push({ key: child.key, data });
+                });
+
+                this.updateStat('statDonations', this.formatCurrency(total));
+
+                const title = document.createElement('div');
+                title.className = 'data-list-title';
+                title.innerHTML = `<i class="fas fa-heart"></i> অনুমোদিত অনুদানের তালিকা (${donations.length.toLocaleString('bn-BD')})`;
+                list.appendChild(title);
+
+                const stack = document.createElement('div');
+                stack.className = 'list-stack';
+                list.appendChild(stack);
+
+                donations.sort((a, b) => (b.data.timestamp || 0) - (a.data.timestamp || 0));
+
+                donations.forEach(({ key, data }) => {
+                    const name = this.escapeHtml(data.name || '');
+                    const date = this.escapeHtml(this.buildDateTimeLabel(data));
+                    const icon = this.getMethodIcon(data.method);
+                    const methodText = this.escapeHtml(this.getMethodLabel(data.method));
+                    const source = this.escapeHtml(data.source === 'website_form' ? 'ওয়েবসাইট সাবমিট' : 'অ্যাডমিন ম্যানুয়াল');
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <div class="list-item-content">
+                            <div class="list-item-title">${name}</div>
+                            <div class="list-item-meta">
+                                <span class="meta-pill"><i class="${icon}"></i>${methodText}</span>
+                                <span class="meta-pill"><i class="fas fa-calendar"></i>${date}</span>
+                                <span class="meta-pill"><i class="fas fa-circle-check"></i>${source}</span>
+                            </div>
+                        </div>
+                        <div class="list-item-side">
+                            <div class="list-item-amount">${this.formatCurrency(data.amount)}</div>
+                            <div class="list-item-actions">
+                                <button class="btn btn-danger btn-small" onclick="APP.deleteDonation('${key}', '${name.replace(/'/g, "\'")}')">
+                                    <i class="fas fa-trash"></i> মুছুন
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    stack.appendChild(item);
+                });
+            }, (err) => {
+                console.error('Error loading donations:', err);
+            });
+        },
+
+        deleteDonation(donationId, name) {
+            if (!confirm(`"${name}" এর অনুমোদিত অনুদান মুছে ফেলতে নিশ্চিত?`)) return;
+
+            if (!db) {
+                this.showAlert('ডেটাবেসে সংযোগ ব্যর্থ।', 'error');
+                return;
+            }
+
+            remove(ref(db, `outside_donations/${donationId}`))
+                .then(() => this.showAlert(`"${name}" এর অনুদান সফলভাবে মুছে ফেলা হয়েছে।`, 'success'))
+                .catch(err => {
+                    console.error('Error deleting donation:', err);
+                    this.showAlert('অনুদান মুছতে ব্যর্থ।', 'error');
+                });
+        },
+
+        initKeyboardShortcuts() {
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    this.closeMemberModal();
+                    this.closePendingDonationModal();
+                }
+            });
+        }
+    };
+
+    APP.loadSettings();
+    APP.loadMembers();
+    APP.loadExpenses();
+    APP.loadPendingDonations();
+    APP.loadDonations();
+    APP.initKeyboardShortcuts();
+</script>
+</body>
+</html>
