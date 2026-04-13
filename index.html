@@ -749,17 +749,162 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        /* ====== LOGIN SCREEN ====== */
+        #loginScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background:
+                radial-gradient(circle at top left, rgba(37,99,235,0.18), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(124,58,237,0.14), transparent 28%),
+                #f3f6fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #loginScreen.hidden { display: none !important; }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 36px 30px 30px;
+            animation: slideUp .3s ease;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-logo-icon {
+            width: 68px;
+            height: 68px;
+            background: var(--primary-grad);
+            border-radius: 22px;
+            display: inline-grid;
+            place-items: center;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 12px 24px rgba(37,99,235,.22);
+        }
+
+        .login-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .login-logo p {
+            font-size: .9rem;
+            color: var(--text-muted);
+        }
+
+        .login-error {
+            background: var(--danger-light);
+            color: #991b1b;
+            border-left: 4px solid var(--danger);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: .88rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-error.show { display: flex; }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: .82rem;
+            color: var(--text-muted);
+        }
+
+        /* ====== LOGOUT BUTTON IN HEADER ====== */
+        .logout-btn {
+            background: rgba(255,255,255,.18);
+            border: 1px solid rgba(255,255,255,.3);
+            color: #fff;
+            padding: 9px 16px;
+            border-radius: var(--radius-full);
+            font-size: .85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,.26);
+        }
+
+        .admin-logged-info {
+            font-size: .82rem;
+            opacity: .85;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container">
+    <!-- ====== LOGIN SCREEN ====== -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="login-logo-icon"><i class="fas fa-shield-alt"></i></div>
+                <h2>অ্যাডমিন লগইন</h2>
+                <p>মানবতার সঞ্চয় — নিরাপদ প্রবেশ</p>
+            </div>
+
+            <div class="login-error" id="loginError">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="loginErrorMsg">ইমেইল বা পাসওয়ার্ড ভুল। আবার চেষ্টা করুন।</span>
+            </div>
+
+            <div class="form-group">
+                <label for="login-email">ইমেইল</label>
+                <input type="email" id="login-email" placeholder="admin@example.com" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">পাসওয়ার্ড</label>
+                <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+            </div>
+
+            <button class="btn btn-primary" id="loginBtn" onclick="AUTH.login()">
+                <i class="fas fa-sign-in-alt"></i> লগইন করুন
+            </button>
+
+            <div class="login-footer">
+                <i class="fas fa-lock"></i> শুধুমাত্র অনুমোদিত অ্যাডমিন প্রবেশ করতে পারবেন
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-container" id="adminApp" style="display:none">
         <header class="admin-header">
             <div class="admin-header-top">
                 <div class="header-badge"><i class="fas fa-shield-heart"></i> স্মার্ট কন্ট্রোল সেন্টার</div>
-                <div class="header-badge"><i class="fas fa-mobile-screen-button"></i> Mobile Friendly</div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div class="header-badge"><i class="fas fa-mobile-screen-button"></i> Mobile Friendly</div>
+                    <button class="logout-btn" onclick="AUTH.logout()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+                </div>
             </div>
             <h1><i class="fas fa-shield-alt"></i> প্রো অ্যাডমিন প্যানেল</h1>
             <p>সদস্য, খরচ, অনুদান এবং সাইট সেটিংস এখন আরো সহজ, পরিষ্কার ও সুন্দরভাবে ম্যানেজ করা যাবে।</p>
+            <div class="admin-logged-info"><i class="fas fa-user-check"></i> লগইন করা আছেন: <span id="loggedEmail"></span></div>
         </header>
 
         <div class="quick-links">
@@ -985,7 +1130,7 @@
                 <div class="data-list" id="donation-list"></div>
             </div>
         </div>
-    </div>
+    </div><!-- /#adminApp -->
 
     <div id="memberEditModal" class="modal" onclick="APP.handleModalBackdrop(event)">
         <div class="modal-content">
@@ -1090,19 +1235,141 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import {
+        getAuth,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+    // ✅ আপনার Firebase Console থেকে সম্পূর্ণ firebaseConfig যোগ করুন
+    // Firebase Console → Project Settings → Your apps → SDK setup and configuration
     const firebaseConfig = {
-        databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com"
+    apiKey: "AIzaSyBIg_HkTCHL3KwtSdAZYv73XMpfj3k5HmA",
+    authDomain: "manobotar-shonchoy.firebaseapp.com",
+    databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com",
+    projectId: "manobotar-shonchoy",
+    storageBucket: "manobotar-shonchoy.firebasestorage.app",
+    messagingSenderId: "468892204030",
+    appId: "1:468892204030:web:e8657b033d72e9ed315eaf"
     };
 
-    let app, db;
+    let app, db, auth;
 
     try {
         app = initializeApp(firebaseConfig);
         db = getDatabase(app);
+        auth = getAuth(app);
     } catch (err) {
         console.error("Firebase initialization error:", err);
     }
+
+    // ====== AUTH CONTROLLER ======
+    window.AUTH = {
+        async login() {
+            const email = document.getElementById('login-email')?.value?.trim();
+            const password = document.getElementById('login-password')?.value;
+            const btn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('loginError');
+            const errorMsg = document.getElementById('loginErrorMsg');
+
+            if (!email || !password) {
+                errorMsg.textContent = 'ইমেইল ও পাসওয়ার্ড দিন।';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            errorDiv.classList.remove('show');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> লগইন হচ্ছে...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle UI update
+            } catch (err) {
+                console.error('Login error:', err);
+                const msgs = {
+                    'auth/user-not-found': 'এই ইমেইলে কোনো অ্যাকাউন্ট নেই।',
+                    'auth/wrong-password': 'পাসওয়ার্ড ভুল।',
+                    'auth/invalid-email': 'ইমেইল ফরম্যাট সঠিক নয়।',
+                    'auth/too-many-requests': 'অনেকবার ব্যর্থ চেষ্টা। কিছুক্ষণ পর আবার চেষ্টা করুন।',
+                    'auth/invalid-credential': 'ইমেইল বা পাসওয়ার্ড ভুল।'
+                };
+                errorMsg.textContent = msgs[err.code] || 'লগইন ব্যর্থ। পুনরায় চেষ্টা করুন।';
+                errorDiv.classList.add('show');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন করুন';
+            }
+        },
+
+        async logout() {
+            if (!confirm('লগআউট করতে নিশ্চিত?')) return;
+            try {
+                await signOut(auth);
+            } catch (err) {
+                console.error('Logout error:', err);
+            }
+        }
+    };
+
+    // Handle Enter key on login form
+    document.getElementById('login-password')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') AUTH.login();
+    });
+    document.getElementById('login-email')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('login-password')?.focus();
+    });
+
+    // ====== AUTH STATE OBSERVER ======
+    // 🔐 আপনার Admin UID নিচে বসান
+    // Firebase Console → Authentication → Users → আপনার ইমেইলের পাশে UID কপি করুন
+    const ADMIN_UIDS = [
+        "9iOTDkpfWpPmRCEK3t2cXt8IcQC2"   // 🔴 এখানে আপনার UID বসান
+    ];
+
+    onAuthStateChanged(auth, (user) => {
+        const loginScreen = document.getElementById('loginScreen');
+        const adminApp = document.getElementById('adminApp');
+        const errorDiv = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMsg');
+
+        if (user && ADMIN_UIDS.includes(user.uid)) {
+            // ✅ লগইন সফল এবং UID ম্যাচ — অ্যাডমিন প্যানেল দেখাও
+            loginScreen.classList.add('hidden');
+            adminApp.style.display = 'block';
+            if (errorDiv) errorDiv.classList.remove('show');
+
+            const emailEl = document.getElementById('loggedEmail');
+            if (emailEl) emailEl.textContent = user.email;
+
+            if (!window._appInitialized) {
+                window._appInitialized = true;
+                APP.loadSettings();
+                APP.loadMembers();
+                APP.loadExpenses();
+                APP.loadPendingDonations();
+                APP.loadDonations();
+                APP.initKeyboardShortcuts();
+            }
+        } else if (user && !ADMIN_UIDS.includes(user.uid)) {
+            // ⛔ লগইন হয়েছে কিন্তু এই ইউজার অ্যাডমিন না — সাথে সাথে লগআউট
+            signOut(auth);
+            loginScreen.classList.remove('hidden');
+            adminApp.style.display = 'none';
+            window._appInitialized = false;
+            if (errorDiv) errorDiv.classList.add('show');
+            if (errorMsg) errorMsg.textContent = 'আপনার অ্যাকাউন্টে অ্যাডমিন অ্যাক্সেস নেই।';
+            const btn = document.getElementById('loginBtn');
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন করুন'; }
+        } else {
+            // লগআউট অবস্থা
+            loginScreen.classList.remove('hidden');
+            adminApp.style.display = 'none';
+            window._appInitialized = false;
+            const btn = document.getElementById('loginBtn');
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> লগইন করুন'; }
+        }
+    });
 
     window.APP = {
         currentTab: 'settings',
@@ -1917,12 +2184,8 @@
         }
     };
 
-    APP.loadSettings();
-    APP.loadMembers();
-    APP.loadExpenses();
-    APP.loadPendingDonations();
-    APP.loadDonations();
-    APP.initKeyboardShortcuts();
+    // ✅ APP লোড এখন onAuthStateChanged এর ভেতর হয়
+    // (উপরে AUTH section দেখুন)
 </script>
 </body>
 </html>
