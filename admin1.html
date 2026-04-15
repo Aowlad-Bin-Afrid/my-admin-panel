@@ -848,9 +848,17 @@ body{
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-const app = initializeApp({
-    databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com"
-});
+const firebaseConfig = {
+    apiKey: "AIzaSyBIg_HkTCHL3KwtSdAZYv73XMpfj3k5HmA",
+    authDomain: "manobotar-shonchoy.firebaseapp.com",
+    databaseURL: "https://manobotar-shonchoy-default-rtdb.firebaseio.com",
+    projectId: "manobotar-shonchoy",
+    storageBucket: "manobotar-shonchoy.firebasestorage.app",
+    messagingSenderId: "468892204030",
+    appId: "1:468892204030:web:e8657b033d72e9ed315eaf"
+};
+
+const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const WEEKLY_AMOUNT = 10;
@@ -953,10 +961,6 @@ function getMemberExtraAmount(memberId, monthKey) {
     return normalizeAmount(getMemberMonthData(memberId, monthKey).extraAmount || 0);
 }
 
-function getMonthUpdatedAt(memberId, monthKey) {
-    return Number(getMemberMonthData(memberId, monthKey).updatedAt || 0);
-}
-
 function calculateMemberGrandTotal(memberId) {
     const memberSavings = savings?.[memberId] || {};
     let paidWeeks = 0;
@@ -966,6 +970,7 @@ function calculateMemberGrandTotal(memberId) {
 
     Object.entries(memberSavings).forEach(([monthKey, monthData]) => {
         if (!monthData || typeof monthData !== "object") return;
+
         const monthInfo = months.find(m => m.key === monthKey);
         if (!monthInfo) return;
 
@@ -973,6 +978,7 @@ function calculateMemberGrandTotal(memberId) {
 
         Object.entries(monthData).forEach(([fieldKey, value]) => {
             if (!fieldKey.startsWith("week") || value !== true) return;
+
             paidWeeks++;
 
             const weekIndex = Number(fieldKey.replace("week", "")) - 1;
@@ -1179,7 +1185,9 @@ async function saveSeparateExtraAmount(memberId, monthKey, amount) {
 
     const nowTs = Date.now();
     const current = normalizeAmount(savings[memberId][monthKey].extraAmount || 0);
-    savings[memberId][monthKey].extraAmount = current + safeAmount;
+    const nextExtra = current + safeAmount;
+
+    savings[memberId][monthKey].extraAmount = nextExtra;
     savings[memberId][monthKey].extraUpdatedAt = nowTs;
     savings[memberId][monthKey].updatedAt = nowTs;
 
@@ -1188,7 +1196,7 @@ async function saveSeparateExtraAmount(memberId, monthKey, amount) {
 
     try {
         await update(ref(db), {
-            [`member_savings/${memberId}/${monthKey}/extraAmount`]: current + safeAmount,
+            [`member_savings/${memberId}/${monthKey}/extraAmount`]: nextExtra,
             [`member_savings/${memberId}/${monthKey}/extraUpdatedAt`]: nowTs,
             [`member_savings/${memberId}/${monthKey}/updatedAt`]: nowTs
         });
@@ -1298,7 +1306,7 @@ function render() {
                         <div class="member-name">${sanitizeText(member.name || "নাম নেই")}</div>
                         <div class="member-meta">
                             <span class="tag">📞 ${sanitizeText(member.phone || "ফোন নেই")}</span>
-                            <span class="tag">💳 মোট জমা: ৳ ${formatMoney(member.totalPaid || 0)}</span>
+                            <span class="tag">💳 মোট জমা: ৳ ${formatMoney(calculateMemberGrandTotal(member.id).totalPaid)}</span>
                         </div>
                     </div>
                 </div>
